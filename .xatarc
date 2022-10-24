@@ -1,0 +1,7 @@
+{
+  "databaseURL": "https://Theodore-Kelechukwu-Onyejiaku-s-workspace-4666kh.eu-west-1.xata.sh/db/test",
+  "codegen": {
+    "output": "utils/xata.js",
+    "moduleType": "esm"
+  }
+}
