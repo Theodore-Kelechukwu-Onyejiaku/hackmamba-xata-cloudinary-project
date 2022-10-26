@@ -4,12 +4,16 @@ import Link from "next/link"
 import { useState } from 'react'
 import { useRouter } from 'next/router';
 
+
 export default function SignIn({ providers }) {
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
+    const [signupError, setSignupError] = useState("")
     const [userInfo, setUserInfo] = useState({ username: "", fullName: "", email: "", password: "" });
     const [errors, setErrors] = useState({ username: "", fullName: "", email: "", password: "" })
 
     const handleFormInput = (e) => {
+        setSignupError("")
         setErrors(prev => ({ ...prev, [e.target.name]: "" }))
         setUserInfo(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
@@ -41,8 +45,21 @@ export default function SignIn({ providers }) {
             return
         }
 
-        const res = await fetch("/api/signup", { method: "POST", body: JSON.stringify({ name: "Kelechukwu", email: "kelechukwu@gmail.com" }) })
-
+        setLoading(true)
+        const res = await fetch("/api/signup", {
+            method: "POST", body: JSON.stringify(userInfo), headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        res = await res.json()
+        const { data, error } = res;
+        if (error) {
+            setSignupError(error)
+            return
+        }
+        alert("Registration successful")
+        // redirect to sigin page
+        router.push("/api/auth/signin")
     }
 
     const validateEmail = (email) => {
@@ -64,7 +81,7 @@ export default function SignIn({ providers }) {
             <div className='h-screen border flex flex-col justify-center items-center'>
                 <form onSubmit={handleCredentialsSubmit} method="post" className='w-4/5 sm:w-96 md:lg-1/3 lg:w-1/4'>
                     <h1 className="text-center my-5">Please Signup </h1>
-                    {JSON.stringify(userInfo, null, 4)}
+                    {signupError && <p className='text-center'>{signupError}</p>}
                     <div>
                         <label htmlFor='username'>Username</label>
                         <input onChange={handleFormInput} name='username' className='mt-2 block border w-full p-2 rounded-md' />

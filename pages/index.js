@@ -16,16 +16,6 @@ export default function Home() {
 }
 
 export const getServerSideProps = async () => {
-
-  const xata = getXataClient();
-
-  const page = await xata.db.Users.getPaginated({
-    pagination: {
-      size: 15,
-    },
-  });
-
-  console.log(page.records);
   return {
     props: {}
   }

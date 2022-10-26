@@ -6,10 +6,12 @@ import { useRouter } from 'next/router';
 
 export default function SignIn({ csrfToken, providers }) {
     const router = useRouter()
+    const [signinError, setSigninError] = useState("")
     const [userInfo, setUserInfo] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({ email: "", password: "" })
 
     const handleFormInput = (e) => {
+        setSigninError("")
         setErrors(prev => ({ ...prev, [e.target.name]: "" }))
         setUserInfo(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
@@ -29,11 +31,14 @@ export default function SignIn({ csrfToken, providers }) {
             setErrors(prev => ({ ...prev, password: "Please enter password" }))
             return
         }
-        const res = await signIn("credentials", { userInfo, redirect: false })
+        const res = await signIn("credentials", { password: userInfo.password, email: userInfo.email, redirect: false })
         console.log(res)
-        if (res.status === 200) {
-            router.push("/")
+        if (res.status !== 200) {
+            setSigninError(res.error);
+            return
         }
+        alert("Signin successful!")
+        router.push("/")
     }
 
     const validateEmail = (email) => {
@@ -47,6 +52,12 @@ export default function SignIn({ csrfToken, providers }) {
 
     const handleGithubSubmit = async () => {
         const res = await signIn("github", { callbackUrl: "/" });
+        console.log(res)
+        return
+        if (res.status !== 200) {
+            setSigninError(res.error);
+            return
+        }
     }
 
     return (
@@ -55,6 +66,7 @@ export default function SignIn({ csrfToken, providers }) {
                 <form onSubmit={handleCredentialsSubmit} method="post" action="/api/auth/callback/credentials" className='w-4/5 sm:w-96 md:lg-1/3 lg:w-1/4'>
                     <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
                     <h1 className="text-center my-5">Please login </h1>
+                    {signinError && <p className='text-red-400'>{signinError}</p>}
                     <div>
                         <label>Email</label>
                         <input onChange={handleFormInput} name='email' className='mt-2 block border w-full p-2 rounded-md' />
