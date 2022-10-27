@@ -11,7 +11,7 @@ export const authOptions = {
     session: {
         strategy: "jwt",
     },
-    secret: "oIJjbD2Zuh+lxXUqbpLSI5b3O0EmjSK7TXbkO6D6bqg=",
+    secret: process.env.NEXT_AUTH_SECRET,
     providers: [
         GithubProvider({
             clientId: process.env.GITHUB_CLIENT_ID,

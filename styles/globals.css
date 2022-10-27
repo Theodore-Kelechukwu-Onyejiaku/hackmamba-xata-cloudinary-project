@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("./loading.css");
+@import url("./process.indicator.css");
+
+html, body {
+    height: 100%;
+}
+
+
+body #__next {
+    height: 100%;
+}
+
+body .content {
+        margin-top: 92px;
+        display: flex;
+        flex-direction: column;
+        padding-top: 0.25rem;
+}
+
+code.dark{
+background-color: red;
+}
+#preview.dark\:text-white code{
+    color:black;
+    background-color: white;
+}
+
+#editor.dark\:text-white code{
+    color:black;
+    background-color: white;
+}
+
+/*
+.ql-bubble .ql-editor code{
+    background-color: red;
+} */

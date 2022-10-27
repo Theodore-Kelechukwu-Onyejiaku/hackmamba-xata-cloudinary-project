@@ -10,6 +10,20 @@ const tables = [
       { name: "email", type: "email", unique: true },
       { name: "fullName", type: "text" },
       { name: "password", type: "string" },
+      { name: "provider", type: "string" },
+    ],
+  },
+  {
+    name: "Cards",
+    columns: [
+      { name: "name", type: "string" },
+      { name: "front", type: "string" },
+      { name: "back", type: "string" },
+      { name: "image", type: "string" },
+      { name: "video", type: "string" },
+      { name: "user", type: "link", link: { table: "Users" } },
+      { name: "likes", type: "multiple" },
+      { name: "color", type: "string" },
     ],
   },
 ];

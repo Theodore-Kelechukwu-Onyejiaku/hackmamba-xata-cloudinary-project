@@ -3,9 +3,12 @@ import { RiGithubLine } from "react-icons/ri"
 import Link from "next/link"
 import { useState } from 'react'
 import { useRouter } from 'next/router';
+import Loading from '../../components/Loading';
+
 
 export default function SignIn({ csrfToken, providers }) {
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
     const [signinError, setSigninError] = useState("")
     const [userInfo, setUserInfo] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({ email: "", password: "" })
@@ -31,12 +34,15 @@ export default function SignIn({ csrfToken, providers }) {
             setErrors(prev => ({ ...prev, password: "Please enter password" }))
             return
         }
+
+        setLoading(true)
         const res = await signIn("credentials", { password: userInfo.password, email: userInfo.email, redirect: false })
-        console.log(res)
         if (res.status !== 200) {
             setSigninError(res.error);
+            setLoading(false)
             return
         }
+        setLoading(false)
         alert("Signin successful!")
         router.push("/")
     }
@@ -52,12 +58,6 @@ export default function SignIn({ csrfToken, providers }) {
 
     const handleGithubSubmit = async () => {
         const res = await signIn("github", { callbackUrl: "/" });
-        console.log(res)
-        return
-        if (res.status !== 200) {
-            setSigninError(res.error);
-            return
-        }
     }
 
     return (
@@ -77,7 +77,7 @@ export default function SignIn({ csrfToken, providers }) {
                         <input onChange={handleFormInput} name="password" type="password" className='mt-2block border w-full p-2 rounded-md' />
                         {errors.password && <p className='text-red-400'>{errors.password}</p>}
                     </div>
-                    <button type="submit" className='bg-black text-white p-2 rounded-md mt-5'>Sign in</button>
+                    {loading ? <Loading /> : <button type="submit" className='bg-black text-white p-2 rounded-md mt-5 w-20'>Sign in</button>}
                 </form>
                 <div className='w-4/5 sm:w-96 md:lg-1/3 lg:w-1/4 mt-5'>
                     {providers &&

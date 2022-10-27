@@ -3,6 +3,7 @@ import { RiGithubLine } from "react-icons/ri"
 import Link from "next/link"
 import { useState } from 'react'
 import { useRouter } from 'next/router';
+import Loading from '../../components/Loading';
 
 
 export default function SignIn({ providers }) {
@@ -54,9 +55,11 @@ export default function SignIn({ providers }) {
         res = await res.json()
         const { data, error } = res;
         if (error) {
+            setLoading(false)
             setSignupError(error)
             return
         }
+        setLoading(false)
         alert("Registration successful")
         // redirect to sigin page
         router.push("/api/auth/signin")
@@ -102,7 +105,7 @@ export default function SignIn({ providers }) {
                         <input onChange={handleFormInput} name="password" type="password" className='mt-2block border w-full p-2 rounded-md' />
                         {errors.password && <p className='text-red-400'>{errors.password}</p>}
                     </div>
-                    <button type="submit" className='bg-black text-white p-2 rounded-md mt-5'>Sign up</button>
+                   {loading ? <Loading/>: <button type="submit" className='bg-black w-20 text-white p-2 rounded-md mt-5'>Sign up</button>}
                 </form>
                 <div className='w-4/5 sm:w-96 md:lg-1/3 lg:w-1/4 mt-5'>
 
@@ -119,7 +122,6 @@ export default function SignIn({ providers }) {
                         </div>
                     }
                 </div>
-
                 <div className="my-4">
                     <p>Already Have an account? <Link href="/auth/signin"><span className="underline cursor-pointer border-2 border-dashed">Login</span></Link></p>
                 </div>
