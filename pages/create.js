@@ -8,22 +8,23 @@ import { modules, formats } from "../utils/editor";
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 import { isImage, isVideo, validateSize } from "../utils/fileValidation";
 import { toast } from 'react-toastify';
-import { FaSpinner } from "react-icons/fa"
 import ProcessIndicator from "../components/ProcessIndicator";
 
 
 
-export default function create() {
-  const colors = ["#F51720", "#1da1f2", "#991900", "#FF4824", "#FFD046", "#261447", "#FFFFFF", "#1B2D2A"]
+export default function create({edit}) {
+  const colors = ["#FFFFFF", "#000000", "#251447", "#870A30"]
   const { data: session, status } = useSession()
-  const [image, setImage] = useState("");
+  const [imageSrc, setImageSrc] = useState("");
+  const [videoSrc, setVideoSrc] = useState("");
+  const [image, setImage] = useState()
+  const [video, setVideo] = useState()
   const [front, setFront] = useState('');
   const [back, setBack] = useState("");
-  const [video, setVideo] = useState("");
   const [imageError, setImageError] = useState("")
   const [videoError, setVideoError] = useState("")
   const [cardName, setCardName] = useState("")
-  const [cardColor, setCardColor] = useState("#F51720")
+  const [cardColor, setCardColor] = useState("#FFFFFF")
   const [loading, setLoading] = useState(false)
 
 
@@ -32,7 +33,7 @@ export default function create() {
   }
 
   const handleCardName = (e) => {
-    setCardName(e.target.value.trim())
+    setCardName(e.target.value)
   }
   const handleImageChange = (e) => {
     setImageError("")
@@ -63,7 +64,8 @@ export default function create() {
     reader.addEventListener("load", () => {
       let newImage = new Image();
       newImage.src = reader.result;
-      setImage(reader.result)
+      setImageSrc(reader.result)
+      setImage(img)
     })
   }
 
@@ -90,12 +92,15 @@ export default function create() {
       setVideoError((error))
       return
     }
-
+    let blobURL = URL.createObjectURL(vid);
     let reader = new FileReader()
     // converts to BASE 64
     reader.readAsDataURL(vid)
     reader.addEventListener("load", () => {
-      setVideo(reader.result)
+      console.log("I have run oo")
+      setVideo("")
+      setVideoSrc(reader.result)
+      setVideo(vid)
     })
   }
 
@@ -104,19 +109,29 @@ export default function create() {
   }
 
   const handleSubmit = async () => {
-    if (!cardName || !front || !back || !image) {
+    console.log("hi there")
+    if (!cardName || !front || !back) {
       toast("Please enter required fields", { type: "error" })
       return
     }
+    console.log(video, image)
     setLoading(true)
+    let formData = new FormData()
+    formData.append("cardName", cardName)
+    formData.append("cardColor", cardColor)
+    formData.append("front", front)
+    formData.append("back", back)
+    formData.append("image", image)
+    formData.append("video", video)
+
+
     const res = await fetch("/api/create-card", {
       method: "POST",
-      body: JSON.stringify({ cardName, cardColor, front, back, image, video }),
-      headers: {
-        "Content-Type": "application/json"
-      }
+      body: formData
     })
     const { error, data } = await res.json();
+    console.log(error, data)
+    console.log("hello")
     if (error) {
       toast("There was error", { type: "error" })
       setLoading(false)
@@ -152,25 +167,16 @@ export default function create() {
               <p className="my-5 text-red-400">{imageError}</p>
               <input type="file" onChange={handleImageChange} className="block" />
             </div>
-            {image && <img src={image} alt="card image" className="basis-1/2 h-auto w-48" accept="image/*" />}
+            {image && <img src={imageSrc} alt="card image" className="basis-1/2 h-auto w-48 my-5" accept="image/*" />}
           </div>
 
           <div className="my-5">
             <label>Select Video (Max 5MB)</label>
             <p className="my-5 text-red-400">{videoError}</p>
             <input type="file" onChange={handleVideoChange} className="block my-5" accept="video/mp4,video/x-m4v,video/*" />
-            {video && <video className="w-48 h-auto" controls>
-              <source src={video} type="video/mp4" />
+            {video && <video src={videoSrc} className="w-48 h-auto" controls>
             </video>}
           </div>
-
-          <ReactQuill
-            id="preview"
-            value={front}
-            readOnly={true}
-            theme={"bubble"}
-            className="dark:text-white"
-          />
 
           {/* ENTER CONTENT */}
           <div className="w-full my-5 dark:text-white">
@@ -186,6 +192,7 @@ export default function create() {
           <button onClick={handleSubmit} className="p-2 bg-black text-white my-5 rounded-md">
             Create Flashcard
           </button>
+
         </div >}
     </div>
   )
