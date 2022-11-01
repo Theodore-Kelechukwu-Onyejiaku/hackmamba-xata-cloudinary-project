@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
-import { useSession, getSession } from "next-auth/react"
+import { useState } from "react";
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/router";
 import LoginToContinue from "../components/LoginToContinue"
 import SkeletonLoader from "../components/Skeleton"
 import 'react-quill/dist/quill.snow.css';
@@ -10,9 +11,8 @@ import { isImage, isVideo, validateSize } from "../utils/fileValidation";
 import { toast } from 'react-toastify';
 import ProcessIndicator from "../components/ProcessIndicator";
 
-
-
 export default function create({edit}) {
+  const router = useRouter()
   const colors = ["#FFFFFF", "#000000", "#251447", "#870A30"]
   const { data: session, status } = useSession()
   const [imageSrc, setImageSrc] = useState("");
@@ -139,13 +139,14 @@ export default function create({edit}) {
     }
     toast("Card created successfully!!!", { type: "success" })
     setLoading(false)
+    router.push("/my-cards")
   }
 
   return (
 
-    <div className="mx-5 dark:bg-black mb-10 ">
+    <div className=" p-5 dark:bg-black w-full dark:text-white">
       {loading ? <ProcessIndicator /> :
-        <div className="overflow-hidden">
+        <div className="">
           <div className="my-5">
             <label>Name of Card<span className="text-red-400">*</span></label>
             <input onChange={handleCardName} value={cardName} className="w-full border p-2 my-5" placeholder="Xata Multiple-Select" />
@@ -155,7 +156,7 @@ export default function create({edit}) {
             <h1 className="my-5 dark:text-white">Select Card Color<span className="text-red-400">*</span></h1>
             <div className="flex space-x-10 py-5 overflow-x-scroll items-center max-w-5xl justify-between md:justify-start md:space-x-10  dark:text-gray-400">
               {colors.map((color, index) =>
-                <span onClick={() => { setCardColor(color) }} key={index} style={{ background: color }} className={`p-10 rounded-md shadow-xl ${color === cardColor ? "border-4 border-blue-700" : ""}`}></span>
+                <span onClick={() => { setCardColor(color) }} key={index} style={{ background: color }} className={`p-10 rounded-md dark:border shadow-xl ${color === cardColor ? "border-4 border-blue-700" : ""}`}></span>
               )}
             </div>
           </div>

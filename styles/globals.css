@@ -4,6 +4,8 @@
 
 @import url("./loading.css");
 @import url("./process.indicator.css");
+@import url("./like.button.css");
+@import url("./flip.css");
 
 html, body {
     height: 100%;
@@ -16,8 +18,6 @@ body #__next {
 
 body .content {
         margin-top: 92px;
-        display: flex;
-        flex-direction: column;
         padding-top: 0.25rem;
 }
 
@@ -34,6 +34,13 @@ background-color: red;
     background-color: white;
 }
 
+.ql-clipboard{
+    visibility: hidden;
+    display: none;
+}
+.ql-tooltip-editor input{
+    display: none;
+}
 /*
 .ql-bubble .ql-editor code{
     background-color: red;

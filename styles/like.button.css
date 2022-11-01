@@ -1,0 +1,19 @@
+.heart-icon {
+    height:100px;
+    width: 100px;
+    background: url("/heart.png");
+    background-position: left;
+    cursor: pointer;
+    
+    z-index: 1000;
+  }
+  
+.heart-icon.liked {
+    animation: like-anim 0.7s steps(28) forwards;
+  }
+
+  @keyframes like-anim {
+    to {
+      background-position: right;
+    }
+  }

@@ -10,15 +10,13 @@ const xata = getXataClient();
 
 const handler = nc({
     onError: (err, req, res, next) => {
-        console.log(req.body)
-        console.error(err.stack);
-        console.log(err.message)
         res.status(500).end("Something broke!");
     },
     onNoMatch: (req, res) => {
         res.status(404).end("Page is not found");
     },
 })
+    // uploading two files 
     .use(multer().any())
     .post(async (req, res) => {
         // get user's token
@@ -52,7 +50,7 @@ const handler = nc({
                 video_signature = uploadedVideoResponse.signature;
             }
             
-            const record = await xata.db.Cards.create({
+            const card = await xata.db.Cards.create({
                 name: req.body.cardName,
                 color: req.body.cardColor,
                 front: req.body.front,
@@ -68,11 +66,9 @@ const handler = nc({
             });
             
             // return response
-            res.json({ error: null, data: record })
+            res.json({ error: null, data: card })
         } catch (error) {
             res.status(500).json({ error: error, data: null })
-            // return response
-            console.log(error)
         }
     })
 

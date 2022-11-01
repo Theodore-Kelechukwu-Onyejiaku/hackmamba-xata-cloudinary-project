@@ -7,7 +7,7 @@ import { useContext, useState } from "react"
 import AppContext from "../utils/AppContext"
 
 export default function Header() {
-    const { theme, setTheme } = useContext(AppContext)
+    const { theme, setTheme, searchValue, setSearchValue } = useContext(AppContext)
     const [toggled, setToggled] = useState(false)
     const router = useRouter()
     const session = useSession()
@@ -17,7 +17,6 @@ export default function Header() {
         signOut({ callbackUrl: "/api/auth/signin" })
     }
 
-
     return (
         <div className="m-0 fixed border dark:border-none dark:bg-slate-800 bg-white dark:text-white py-3 top-0 w-full z-50">
             <div className="flex items-center justify-center mx-2 md:mx-5 my-3">
@@ -26,13 +25,11 @@ export default function Header() {
                         <Link href="/"><span className="cursor-pointer text-2xl nd:text-3xl font-thin">HackFlashC</span></Link>
                     </div>
                     <div className="w-full hidden md:block">
-                        <input type="text" className="w-full p-2 border rounded-md" placeholder="Search for flashcard" />
+                        <input value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} type="text" className="w-full p-2 border rounded-md text-black dark:placeholder:text-black placeholder:text-color-light" placeholder="Search for flashcard by name" />
                     </div>
                 </div>
 
                 <div className="basis-2/4 flex items-center justify-end">
-
-
                     {status === "authenticated" ?
                         <>
                             <div onClick={handleSignout} className="cursor-pointer hidden md:block mr-3 md:mr-5">
@@ -48,11 +45,7 @@ export default function Header() {
                                     <span className="cursor-pointer hover:text-gray-400">My Cards</span>
                                 </Link>
                             </div>
-                            <div className="hidden md:flex items-center justify-around mr-3 md:mr-5 cursor-pointer">
-                                <Link href="/about" className="">
-                                    <span className="cursor-pointer hover:text-gray-400">My Collections</span>
-                                </Link>
-                            </div>
+
                         </>
                         :
                         <Link href="/api/auth/signin">
@@ -72,7 +65,7 @@ export default function Header() {
                     {status ?
                         data?.user &&
                         <div className="ml-0 md:ml-5 flex flex-col relative z-50">
-                            <div onClick={() => { setToggled(!toggled) }} className="flex w-40 md:w-fit items-center justify-center space-x-2 cursor-pointer md:cursor-default bg-white dark:bg-slate-800   relative z-50 mr-0">
+                            <div onClick={() => { setToggled(!toggled) }} className="flex w-40 md:w-fit items-center justify-end space-x-4 cursor-pointer md:cursor-default bg-white dark:bg-slate-800   relative z-50 mr-0">
                                 <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
                                     {data?.user?.fullName.split(" ")[0].split("")[0]}
                                 </span>
@@ -83,7 +76,6 @@ export default function Header() {
                                 <Link href="/create"><span onClick={() => { setToggled(!toggled) }} className={`${toggled ? "my-5 left-0" : "h-0 my-0"} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-75`}>Create</span></Link>
                                 <Link href="/about"><span onClick={() => { setToggled(!toggled) }} className={`${toggled ? "my-5 left-0" : "h-0 my-0"} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-100`}>About</span></Link>
                                 <Link href="/my-cards"><span onClick={() => { setToggled(!toggled) }} className={`${toggled ? "my-5 left-0" : "h-0 my-0"} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-500`}>My Cards</span></Link>
-                                <Link href="/about"><span onClick={() => { setToggled(!toggled) }} className={`${toggled ? "my-5 left-0" : "h-0 my-0"} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-700`}>Collections</span></Link>
                             </div>
 
                         </div>

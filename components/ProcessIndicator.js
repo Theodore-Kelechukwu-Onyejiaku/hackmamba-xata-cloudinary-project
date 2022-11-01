@@ -8,7 +8,7 @@ export default function ProcessIndicator() {
                 <span></span>
                 <span></span>
             </div>
-            <p className='font-thin'>Please wait while we upload data. This may take some time. Thanks</p>
+            <p className='font-thin text-center'>Please wait while we upload data. This may take some time. Thanks</p>
         </div>
     )
 }

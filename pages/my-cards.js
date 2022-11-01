@@ -23,7 +23,7 @@ export default function MyCards({ data, error }) {
     }
 
     return (
-        <div className="dark:text-gray-300">
+        <div className="dark:text-gray-300 dark:bg-black">
             <div className='mx-5'>
                 <h1 className='my-5 text-lg'>Here are your cards</h1>
 
@@ -31,7 +31,6 @@ export default function MyCards({ data, error }) {
                     <p>Sorry you have no cards at the moment!</p>
                     <Link href="/create"><span className="text-red-500 underline cursor-pointer">Click here to create a card</span></Link>
                 </div>}
-                {/* <Cards /> */}
             </div>
         </div>
     )
@@ -45,7 +44,8 @@ export const getServerSideProps = async ({ req }) => {
                 error: "You are not signed in", data: null
             }
         }
-    } else {
+    }
+    try {
         const xata = getXataClient()
         const { records: cards } = await xata.db.Cards.filter("user.id", token.user.id)
             .select(["*", "user.*"])
@@ -57,6 +57,8 @@ export const getServerSideProps = async ({ req }) => {
         return {
             props: { error: null, data: cards }
         }
+    } catch (error) {
+        return { props: { error: error.message, data: null } }
     }
 
 }
