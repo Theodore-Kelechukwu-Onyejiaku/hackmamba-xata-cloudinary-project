@@ -112,7 +112,7 @@ export default function Cards({ cards, error, edit }) {
           </div>
         )}
       <div className="flex flex-col justify-center items-center sm:w-96 md:w-3/4 mx-auto">
-        {cards ? cards.filter((card) => {
+        {cards?.length ? cards.filter((card) => {
           if (searchValue === '') {
             return card;
           } if (card?.name.toLowerCase().includes(searchValue)) {
@@ -186,7 +186,7 @@ export default function Cards({ cards, error, edit }) {
               </div>
             ) : null}
           </>
-        )) : <div>No cards at the moment</div>}
+        )) : <div className="dark:text-white text-red-500">No cards at the moment</div>}
       </div>
     </div>
   );
