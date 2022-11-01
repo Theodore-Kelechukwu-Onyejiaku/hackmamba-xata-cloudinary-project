@@ -46,7 +46,7 @@ export const authOptions = {
                 }
                 return user
             }
-        }),
+        })
     ],
     callbacks: {
         async jwt({ token, user, account, profile, isNewUser }) {
