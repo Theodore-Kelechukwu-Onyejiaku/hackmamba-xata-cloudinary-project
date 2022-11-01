@@ -3,8 +3,7 @@ const xata = getXataClient();
 import bcrypt from "bcrypt"
 
 
-const handler = aysnc(req, res) => {
-    console.log("hmmmm")
+const handler = async (req, res) => {
     try {
         // check if user already exists
         const user = await xata.db.Users.filter("email", req.body.email).getFirst()

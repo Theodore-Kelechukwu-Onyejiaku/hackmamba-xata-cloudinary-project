@@ -22,7 +22,8 @@ export default function Login() {
                     </div>
                 </div>
                 <div className="my-4">
-                    <p>Don't Have an account?<Link href="/signup"><span className="underline cursor-pointer border-2 border-dashed">Signup</span></Link></p>
+                    <p>Don't Have an account?</p>
+                    <Link href="/signup"><span className="underline cursor-pointer border-2 border-dashed">Signup</span></Link>
                 </div>
             </div>
         </div>

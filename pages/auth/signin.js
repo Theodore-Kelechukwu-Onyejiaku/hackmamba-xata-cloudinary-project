@@ -94,7 +94,8 @@ export default function SignIn({ csrfToken, providers }) {
                     }
                 </div>
                 <div className="my-4">
-                    <p>Don't Have an account? <Link href="/auth/signup"><span className="underline cursor-pointer border-2 border-dashed">Signup</span></Link></p>
+                    <p>Don't Have an account? </p>
+                    <Link href="/auth/signup"><span className="underline cursor-pointer border-2 border-dashed">Signup</span></Link>
                 </div>
             </div>
         </div>
