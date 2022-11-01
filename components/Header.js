@@ -20,7 +20,7 @@ export default function Header() {
     return (
         <div className="m-0 fixed border dark:border-none dark:bg-slate-800 bg-white dark:text-white py-3 top-0 w-full z-50">
             <div className="flex items-center justify-center mx-2 md:mx-5 my-3">
-                <div className="basis-2/4 flex items-center justify-start">
+                <div className="basis-2/4 flex items-center justify-start p-3">
                     <div className="md:mr-10">
                         <Link href="/"><span className="cursor-pointer text-2xl nd:text-3xl font-thin">HackFlashC</span></Link>
                     </div>
@@ -49,7 +49,7 @@ export default function Header() {
                         </>
                         :
                         <Link href="/api/auth/signin">
-                            <div className="cursor-pointer block md:mr-5">
+                            <div className="cursor-pointer block mr-5">
                                 <span className="bg-color-orange text-white p-2 hover:text-gray-400">Login</span>
                             </div>
                         </Link>

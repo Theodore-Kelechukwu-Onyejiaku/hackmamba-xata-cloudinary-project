@@ -16,10 +16,11 @@ export default function Home({ cards, error }) {
         <link rel="icon" href="/favicon.ico" />
 
       </Head>
+
+      <h1 className='dark:text-white mx-5 my-5 text-left'>All Cards</h1>
       <div className="w-full px-5 md:hidden">
         <input value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} type="text" className="w-full p-2 border rounded-md text-black dark:placeholder:text-black placeholder:text-color-light" placeholder="Search for flashcard by name" />
       </div>
-      <h1 className='dark:text-white mx-5 my-5 text-left'>All Cards</h1>
       <Cards cards={cards} error={error} />
     </div>
   )

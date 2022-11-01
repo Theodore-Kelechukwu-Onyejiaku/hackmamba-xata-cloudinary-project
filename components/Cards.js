@@ -47,7 +47,6 @@ export default function Cards({ cards, error, edit }) {
         const { error } = await res.json();
         if (error) {
             toast(error, { type: "error" })
-            setFrontBackLoading(false)
             return
         }
         if (likeButton.classList.contains("liked")) {
@@ -124,13 +123,13 @@ export default function Cards({ cards, error, edit }) {
                     <>
                         <div style={{ background: card.color }} key={card._id} className='my-5 w-96  md:w-full relative dark:bg-slate-800 drop-shadow-2xl rounded-xl shadow-2xl pb-10 md:pb-0'>
                             <figure className="flex  flex-col md:flex-row">
-                                <div className="md:w-2/4 h-29">
-                                    <img onClick={() => { handleImageOpen(card.image) }} className="w-full md:w-full md:h-full md:h-2/2 h-80 object-fill rounded-xl md:rounded-none cursor-pointer" src={card.image} alt="" width="384" height="512" />
+                                <div className="md:w-2/4 h-29 ">
+                                    <img onClick={() => { handleImageOpen(card.image) }} className="w-full md:w-full md:h-full md:h-2/2 h-80 object-fill rounded-xl cursor-pointer" src={card.image} alt="" width="384" height="512" />
                                 </div>
-                                <div className="flex md:flex-col md:text-left p-2 md:w-full">
-                                    <div className={`${card.color === "#FFFFFF" ? "text-black " : "text-white "} basis-4/5 p-5`}>
+                                <div className="flex md:flex-col md:text-left md:p-0 p-2 md:w-full md:h-1/2">
+                                    <div className={`${card.color === "#FFFFFF" ? "text-black " : "text-white "} w-full md:pt-0 p-5`}>
                                         <figcaption className="font-medium">
-                                            <div className="text-sky-500 dark:text-sky-400 my-3">
+                                            <div className="text-sky-500 dark:text-sky-400 md:py-0 py-3">
                                                 {card.name}
                                             </div>
                                         </figcaption>
@@ -154,30 +153,30 @@ export default function Cards({ cards, error, edit }) {
                                                     ></ReactQuill>
                                                 </div>
                                             </div>
-
-
+                                        </div>
+                                        <div>
+                                            <p className="text-sm my-5">{card?.user?.fullName}</p>
+                                            <div className="p-2 md:flex space-x-5 hidden">
+                                                <button onClick={() => { back(card.id) }} className="p-2 bg-black border text-white rounded-md">Front</button>
+                                                <button onClick={() => { front(card.id) }} className="p-2 bg-black border text-white rounded-md">Back</button>
+                                            </div>
                                         </div>
 
-                                        <p className="text-sm my-5">{card?.user?.fullName}</p>
-                                        <div className="p-2 md:flex space-x-5 hidden">
-                                            <button onClick={() => { back(card.id) }} className="p-2 bg-black text-white rounded-md">Front</button>
-                                            <button onClick={() => { front(card.id) }} className="p-2 bg-black text-white rounded-md">Back</button>
-                                        </div>
                                     </div>
 
-                                    <div className={`${card.color === "#FFFFFF" ? "text-black " : "text-white "} flex md:flex-row md:space-x-10 space-y-10 flex-col basis-1/5 items-end  justify-start mt-10 md:mt-0 p-5`}>
-                                        <div className="relative flex flex-col md:flex-row space-y-10 items-center justify-center" ><span id={card.id.toString() + card.id} onClick={() => { handleLikeCard(card, card.id) }} className={`${card.likes.includes(data?.user?.id) ? " liked " : " "}heart-icon outline-none border-none block md:relative absolute -right-8`}></span></div>
-                                        <div className="relative md:-left-10 -top-10 md:top-0 md:h-12 w-12">
-                                            <span id={card.id.toString() + card.id + card.id} className="absolute md:left-0 md:bottom-0 right-0  text-sm">{card.likes.length}</span>
+                                    <div className={`${card.color === "#FFFFFF" ? "text-black " : "text-white "} bottom-0 right-0 absolute flex flex-row items-center justify-start mt-10 md:mt-0 pr-5 py-4`}>
+                                        <div className="relative flex-row items-center justify-center" ><span id={card.id.toString() + card.id} onClick={() => { handleLikeCard(card, card.id) }} className={`${card.likes.includes(data?.user?.id) ? " liked " : " "} border heart-icon outline-none border-none block`}></span></div>
+                                        <div className="relative flex items-center h-12  w-12">
+                                            <span id={card.id.toString() + card.id + card.id} className="text-sm relative -left-8">{card.likes.length}</span>
                                         </div>
                                         {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video) }} className='text-4xl animate-pulse text-white dark:text-white z-40 cursor-pointer font-extrabold' />
                                             : <MdOutlineVideocamOff className={`${card.color === "#FFFFFF" ? "text-black" : "text-white"} text-4xl animate-pulse text-white z-40 cursor-not-allowed font-extrabold`} />}
                                     </div>
 
                                 </div>
-                                <div className="p-2 flex space-x-5 md:hidden">
-                                    <button onClick={() => { back(card.id) }} className="p-2 bg-black rounded-md text-white">Front</button>
-                                    <button onClick={() => { front(card.id) }} className="p-2 bg-black rounded-md text-white">Back</button>
+                                <div className="ml-5 flex space-x-5 md:hidden">
+                                    <button onClick={() => { back(card.id) }} className="p-3 bg-black rounded-md text-white border">Front</button>
+                                    <button onClick={() => { front(card.id) }} className="p-3 bg-black rounded-md text-white border">Back</button>
                                 </div>
                             </figure>
                         </div>
