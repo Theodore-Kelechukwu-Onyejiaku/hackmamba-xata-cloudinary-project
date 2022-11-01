@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { getXataClient } from '../utils/xata';
 import SkeletonLoader from '../components/Skeleton';
@@ -153,7 +152,7 @@ export default function Card({ card, error }) {
                 <div className="flex flex-col md:flex-row md:space-x-10 md:justify-center md:items-center">
                   <div className="md:basis-1/2  flex flex-col my-10">
                     <span className="font-bold my-5">Card Image</span>
-                    <Image src={card.image} className="w-full rounded-md" alt={card.name} />
+                    <img src={card.image} className="w-full rounded-md" alt={card.name} />
                     <div className="my-3">
                       <label>Replace</label>
                       <input onChange={handleImageSelect} name="newImage" type="file" />

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { toast } from 'react-toastify';
 import LoginToContinue from '../components/LoginToContinue';
 import SkeletonLoader from '../components/Skeleton';
@@ -63,8 +62,6 @@ export default function Create() {
     // converts to BASE 64
     reader.readAsDataURL(img);
     reader.addEventListener('load', () => {
-      const newImage = new Image();
-      newImage.src = reader.result;
       setImageSrc(reader.result);
       setImage(img);
     });
@@ -148,7 +145,7 @@ export default function Create() {
                 Name of Card
                 <span className="text-red-400">*</span>
               </label>
-              <input onChange={handleCardName} value={cardName} className="w-full border p-2 my-5" placeholder="Xata Multiple-Select" />
+              <input onChange={handleCardName} value={cardName} className="w-full text-black border p-2 my-5 dark:placeholder:text-gray-600" placeholder="Xata Multiple-Select" />
             </div>
             {/* SELECT CARD COLOR */}
             <div>
@@ -171,7 +168,7 @@ export default function Create() {
                 <p className="my-5 text-red-400">{imageError}</p>
                 <input type="file" onChange={handleImageChange} className="block" />
               </div>
-              {image && <Image alt="card" src={imageSrc} className="basis-1/2 h-auto w-48 my-5" accept="image/*" />}
+              {image && <img alt="card" src={imageSrc} className="basis-1/2 h-auto w-48 my-5" accept="image/*" />}
             </div>
 
             <div className="my-5">
@@ -179,7 +176,7 @@ export default function Create() {
               <p className="my-5 text-red-400">{videoError}</p>
               <input type="file" onChange={handleVideoChange} className="block my-5" accept="video/mp4,video/x-m4v,video/*" />
               {video && (
-              <video src={videoSrc} className="w-48 h-auto" controls />
+                <video src={videoSrc} className="w-48 h-auto" controls />
               )}
             </div>
 
