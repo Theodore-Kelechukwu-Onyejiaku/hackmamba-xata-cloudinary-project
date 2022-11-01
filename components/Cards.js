@@ -55,14 +55,13 @@ export default function Cards({ cards, error, edit }) {
     }
   };
   const handleCardDelete = async (card) => {
-    const res = fetch('/api/delete-card', {
+    const res = await fetch('/api/delete-card', {
       method: 'DELETE',
       body: JSON.stringify(card),
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
     const { error } = await res.json();
     if (error) {
       toast(error, { type: 'error' });
@@ -108,7 +107,7 @@ export default function Cards({ cards, error, edit }) {
             <video className="w-full md:w-3/4 h-auto" controls autoPlay>
               <source src={videoSource} type="video/mp4" />
             </video>
-            <span className="absolute top-20 text-3xl text-white cursor-pointer md:right-10 md:top-10 md:text-5xl" onClick={() => { setVideoOpen(false); }}><MdOutlineClear /></span>
+            <span className="absolute top-20 text-3xl text-white cursor-pointer md:right-10 sm:top-5 md:top-10 md:text-5xl" onClick={() => { setVideoOpen(false); }}><MdOutlineClear /></span>
           </div>
         )}
       <div className="flex flex-col justify-center items-center sm:w-96 md:w-3/4 mx-auto">
@@ -180,7 +179,7 @@ export default function Cards({ cards, error, edit }) {
               </figure>
             </div>
             {edit ? (
-              <div className="flex space-x-10">
+              <div className="flex space-x-10 mb-20">
                 <Link href={`/${card.id}`}><TbEdit className="cursor-pointer text-3xl" /></Link>
                 <MdOutlineDeleteOutline onClick={() => { handleCardDelete(card); }} className="cursor-pointer text-3xl text-red-700" />
               </div>
