@@ -199,7 +199,7 @@ export default function Card({ card, error }) {
                     {frontBackLoading ? <Loading /> : <button onClick={handleFrontBackUpdate} className='p-2 bg-black my-5 text-white rounded-md border'>Update Front/Back</button>}
                 </div>
             </div>}
-        </div> : <div className="h-screen flex items-center justify-center text-red-600">Sorry you don't have access to this card</div>}
+        </div> : <div className="h-screen flex items-center justify-center text-red-600">Sorry you don&apos;t have access to this card</div>}
     </div>
     )
 }
