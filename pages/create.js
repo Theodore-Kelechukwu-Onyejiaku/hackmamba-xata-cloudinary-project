@@ -10,8 +10,9 @@ const ReactQuill = typeof window === 'object' ? require('react-quill') : () => f
 import { isImage, isVideo, validateSize } from "../utils/fileValidation";
 import { toast } from 'react-toastify';
 import ProcessIndicator from "../components/ProcessIndicator";
+import Image from "next/image";
 
-export default function create({edit}) {
+export default function Create({ edit }) {
   const router = useRouter()
   const colors = ["#FFFFFF", "#000000", "#251447", "#870A30"]
   const { data: session, status } = useSession()
@@ -168,7 +169,7 @@ export default function create({edit}) {
               <p className="my-5 text-red-400">{imageError}</p>
               <input type="file" onChange={handleImageChange} className="block" />
             </div>
-            {image && <img src={imageSrc} alt="card image" className="basis-1/2 h-auto w-48 my-5" accept="image/*" />}
+            {image && <Image alt={card.name} src={imageSrc} className="basis-1/2 h-auto w-48 my-5" accept="image/*" />}
           </div>
 
           <div className="my-5">

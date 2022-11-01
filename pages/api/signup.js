@@ -3,7 +3,7 @@ const xata = getXataClient();
 import bcrypt from "bcrypt"
 
 
-export default async function (req, res) {
+const handler = aysnc(req, res) => {
     console.log("hmmmm")
     try {
         // check if user already exists
@@ -27,3 +27,5 @@ export default async function (req, res) {
         res.status(500).json({ data: null, error: "something went wrong" })
     }
 }
+
+export default handler;

@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import Loading from '../components/Loading';
 import ProcessIndicator from '../components/ProcessIndicator';
 import { validateSize } from '../utils/fileValidation';
+import Image from 'next/image';
 
 export default function Card({ card, error }) {
     const router = useRouter();
@@ -147,7 +148,7 @@ export default function Card({ card, error }) {
                     <div className='flex flex-col md:flex-row md:space-x-10 md:justify-center md:items-center'>
                         <div className='md:basis-1/2  flex flex-col my-10'>
                             <span className='font-bold my-5'>Card Image</span>
-                            <img src={card.image} className="w-full rounded-md" />
+                            <Image src={card.image} className="w-full rounded-md" alt={card.name} />
                             <div className='my-3'>
                                 <label>Replace</label>
                                 <input onChange={handleImageSelect} name="newImage" type="file" />
