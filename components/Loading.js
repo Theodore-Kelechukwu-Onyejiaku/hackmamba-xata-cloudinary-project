@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
 export default function Loading() {
-    return (
-        <div class="loading">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    )
+  return (
+    <div className="loading">
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+    </div>
+  );
 }
