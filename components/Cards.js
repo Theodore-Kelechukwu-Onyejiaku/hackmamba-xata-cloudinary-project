@@ -142,7 +142,7 @@ export default function Cards({ cards, error, edit }) {
                           />
 
                         </div>
-                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} back font-medium text-xs`}>
+                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} back font-medium text-xs text-left`}>
                           {/* {card.back} */}
                           <ReactQuill
                             value={card.back}
@@ -167,7 +167,7 @@ export default function Cards({ cards, error, edit }) {
                     <div className="relative flex items-center h-12  w-12">
                       <span id={card.id.toString() + card.id + card.id} className="text-sm relative -left-8">{card.likes.length}</span>
                     </div>
-                    {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video); }} className="text-4xl animate-pulse text-white dark:text-white z-40 cursor-pointer font-extrabold" />
+                    {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video); }} className={`${card.color === '#FFFFFF' ? 'text-black' : 'text-black'} text-4xl animate-pulse dark:text-black z-40 cursor-pointer font-extrabold`} />
                       : <MdOutlineVideocamOff className={`${card.color === '#FFFFFF' ? 'text-black' : 'text-white'} text-4xl animate-pulse text-white z-40 cursor-not-allowed font-extrabold`} />}
                   </div>
 

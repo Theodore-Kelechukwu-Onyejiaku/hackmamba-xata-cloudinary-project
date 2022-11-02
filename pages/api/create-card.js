@@ -32,37 +32,46 @@ const handler = nc({
     // create a neew Data URI parser
     const parser = new DatauriParser();
     try {
-      let image_id; let image_signature; let video_id; let video_signature;
-      let uploadedImageResponse; let uploadedVideoResponse;
-      if (image) {
-        const base64Image = parser.format(path.extname(image.originalname).toString(), image.buffer);
-        uploadedImageResponse = await cloudinary.uploader.upload(base64Image.content, 'flashcards', { resource_type: 'image' });
-        image_id = uploadedImageResponse.public_id;
-        image_signature = uploadedImageResponse.signature;
-      }
-      if (video) {
-        const base64Video = parser.format(path.extname(video.originalname).toString(), video.buffer);
-        uploadedVideoResponse = await cloudinary.uploader.upload(base64Video.content, 'flashcards', { resource_type: 'video' });
-        video_id = uploadedVideoResponse.public_id;
-        video_signature = uploadedVideoResponse.signature;
-      }
+      // let image_id; let image_signature; let video_id; let video_signature;
+      // let uploadedImageResponse; let uploadedVideoResponse;
+
+      // create image
+      const createImage = async (img) => {
+        const base64Image = parser.format(path.extname(img.originalname).toString(), img.buffer);
+        const uploadedImageResponse = await cloudinary.uploader.upload(base64Image.content, 'flashcards', { resource_type: 'image' });
+        return uploadedImageResponse;
+      };
+
+      // create video
+      const createVideo = async (vid) => {
+        const base64Video = parser.format(path.extname(vid.originalname).toString(), vid.buffer);
+        const uploadedVideoResponse = await cloudinary.uploader.upload(base64Video.content, 'flashcards', { resource_type: 'video' });
+        return uploadedVideoResponse;
+      };
+
+      const createdImage = await createImage(image);
+      const imageUrl = createdImage.url;
+      const image_id = createdImage.public_id;
+      const image_signature = createdImage.signature;
+      const createdVideo = video ? await createVideo(video) : null;
+      const videoUrl = createdVideo?.url;
+      const video_id = createdVideo?.public_id;
+      const video_signature = createVideo?.signature;
 
       const card = await xata.db.Cards.create({
         name: req.body.cardName,
         color: req.body.cardColor,
         front: req.body.front,
         back: req.body.back,
-        image: await uploadedImageResponse?.url,
+        image: imageUrl,
         image_id,
         image_signature,
-        video: await uploadedVideoResponse?.url,
+        video: videoUrl,
         video_id,
         video_signature,
         user: token.user.id,
         likes: [],
       });
-
-      // return response
       res.json({ error: null, data: card });
     } catch (error) {
       res.status(500).json({ error, data: null });
