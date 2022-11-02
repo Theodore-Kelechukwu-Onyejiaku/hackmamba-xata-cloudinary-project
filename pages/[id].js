@@ -18,9 +18,9 @@ export default function Card({ card, error }) {
   const router = useRouter();
   const session = useSession();
   const { data } = session;
-  const [back, setBack] = useState(card.back);
-  const [front, setFront] = useState(card.front);
-  const [cardName, setCardName] = useState(card.name);
+  const [back, setBack] = useState(card?.back);
+  const [front, setFront] = useState(card?.front);
+  const [cardName, setCardName] = useState(card?.name);
   const [newImage, setNewImage] = useState(null);
   const [newVideo, setNewVideo] = useState(null);
   const [imageError, setImageError] = useState('');
@@ -229,6 +229,7 @@ export default function Card({ card, error }) {
 export async function getStaticPaths() {
   const xata = getXataClient();
   const cards = await xata.db.Cards.select(['*', 'user.*']).getAll();
+  console.log(cards);
   const paths = cards.map((card) => ({
     params: { id: card.id },
   }));
