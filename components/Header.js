@@ -1,14 +1,11 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { RiSunFill, RiMoonFill } from 'react-icons/ri';
 import { SlArrowDown } from 'react-icons/sl';
 import { useContext, useState } from 'react';
 import AppContext from '../utils/AppContext';
 
 export default function Header() {
-  const {
-    theme, setTheme, searchValue, setSearchValue,
-  } = useContext(AppContext);
+  const { searchValue, setSearchValue } = useContext(AppContext);
   const [toggled, setToggled] = useState(false);
   const session = useSession();
   const { status, data } = session;
@@ -65,8 +62,6 @@ export default function Header() {
             </Link>
           </div>
 
-          {theme === 'dark' ? <button type="button" className="border-none text-2xl outline-none ml-0 mr-3 md:mr-5"><RiSunFill onClick={() => { localStorage.theme = 'light'; setTheme('light'); }} /></button>
-            : <button type="button" className="border-none text-3xl outline-none mr-3 ml-0 md:mr-5"><RiMoonFill onClick={() => { localStorage.theme = 'dark'; setTheme('dark'); }} /></button>}
           {status
             ? data?.user
             && (
@@ -75,7 +70,7 @@ export default function Header() {
                   <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
                     {data?.user?.fullName.split(' ')[0].split('')[0]}
                   </span>
-                  <span className={`${toggled ? 'rotate-180' : 'rotate-0'} transition-all duration-500 md:hidden`}><SlArrowDown /></span>
+                  <span className={`${toggled ? 'rotate-180' : 'rotate-0'} transition-all duration-500 md:hidden p-3`}><SlArrowDown /></span>
                 </div>
 
                 <div className={`${toggled ? 'top-12 z-50 bg-white' : '-z-50  border-none'} flex flex-col absolute top-0 w-full dark:bg-slate-800 transition-all duration-500 border border-t-0 dark:border-none md:hidden`}>

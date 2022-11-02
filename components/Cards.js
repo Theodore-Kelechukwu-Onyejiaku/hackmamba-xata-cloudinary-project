@@ -121,8 +121,8 @@ export default function Cards({ cards, error, edit }) {
           <>
             <div style={{ background: card.color }} key={card.id} className="my-5 w-96  md:w-full relative dark:bg-slate-800 drop-shadow-2xl rounded-xl shadow-2xl pb-10 md:pb-0">
               <figure className="flex  flex-col md:flex-row">
-                <div className="md:w-2/4">
-                  <img alt="card" onClick={() => { handleImageOpen(card.image); }} className="w-full md:w-full h-60 md:h-full md:h-2/2 object-fill rounded-xl cursor-pointer" src={card.image} />
+                <div className="md:w-2/4 p-4">
+                  <img alt="card" onClick={() => { handleImageOpen(card.image); }} className="md:w-full w-full h-60 md:h-full md:h-2/2 object-contain rounded-xl cursor-pointer" src={card.image} />
                 </div>
                 <div className="flex md:flex-col md:text-left md:p-0 p-2 md:w-full md:h-1/2">
                   <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} w-full md:pt-0 p-5`}>
@@ -167,7 +167,7 @@ export default function Cards({ cards, error, edit }) {
                     <div className="relative flex items-center h-12  w-12">
                       <span id={card.id.toString() + card.id + card.id} className="text-sm relative -left-8">{card.likes.length}</span>
                     </div>
-                    {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video); }} className={`${card.color === '#FFFFFF' ? 'text-black' : 'text-black'} text-4xl animate-pulse dark:text-black z-40 cursor-pointer font-extrabold`} />
+                    {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video); }} className={`${card.color === '#FFFFFF' ? 'text-black dark:text-black' : 'text-white dark:text-white'} text-4xl animate-pulse  z-40 cursor-pointer font-extrabold`} />
                       : <MdOutlineVideocamOff className={`${card.color === '#FFFFFF' ? 'text-black' : 'text-white'} text-4xl animate-pulse text-white z-40 cursor-not-allowed font-extrabold`} />}
                   </div>
 
