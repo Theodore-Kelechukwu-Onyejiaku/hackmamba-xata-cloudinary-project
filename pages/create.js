@@ -106,7 +106,7 @@ export default function Create() {
   }
 
   const handleSubmit = async () => {
-    if (!cardName || !front || !back) {
+    if (!cardName || !front || !back || !image) {
       toast('Please enter required fields', { type: 'error' });
       return;
     }
