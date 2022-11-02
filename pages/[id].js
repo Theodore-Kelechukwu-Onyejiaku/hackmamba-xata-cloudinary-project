@@ -228,19 +228,13 @@ export default function Card({ card, error }) {
 
 export async function getStaticPaths() {
   const xata = getXataClient();
-  try {
-    const cards = await xata.db.Cards.select(['*', 'user.*']).getAll();
-    const paths = cards.map((card) => ({
-      params: { id: card.id },
-    }));
-    return {
-      paths, fallback: false,
-    };
-  } catch (error) {
-    return {
-      paths: [], fallback: false,
-    };
-  }
+  const cards = await xata.db.Cards.select(['*', 'user.*']).getAll();
+  const paths = cards.map((card) => ({
+    params: { id: card.id },
+  }));
+  return {
+    paths, fallback: true,
+  };
 }
 
 export async function getStaticProps({ params }) {
