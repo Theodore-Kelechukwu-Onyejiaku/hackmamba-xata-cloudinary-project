@@ -234,11 +234,11 @@ export async function getStaticPaths() {
       params: { id: card.id },
     }));
     return {
-      paths, fallback: false,
+      paths, fallback: true,
     };
   } catch (error) {
     return {
-      paths: [], fallback: false,
+      paths: [], fallback: true,
     };
   }
 }
