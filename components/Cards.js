@@ -133,7 +133,7 @@ export default function Cards({ cards, error, edit }) {
                     </figcaption>
                     <div className="card-container border rounded-3xl w-full">
                       <div className="card" id={card.id}>
-                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} front font-medium text-xs`}>
+                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} front font-medium text-xs text-left`}>
                           <ReactQuill
                             style={{ position: 'relative' }}
                             readOnly

@@ -41,7 +41,11 @@ background-color: red;
 .ql-tooltip-editor input{
     display: none;
 }
-/*
-.ql-bubble .ql-editor code{
-    background-color: red;
-} */
+
+
+code {
+    color: black;
+    background-color: white;
+    padding: 5px;
+    line-height: 25px;
+}
