@@ -13,6 +13,7 @@ export default function SignIn({ csrfToken, providers }) {
   const [userInfo, setUserInfo] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({ email: '', password: '' });
 
+  // validate email address
   const validateEmail = (email) => {
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (email.match(emailRegex)) {
@@ -21,11 +22,14 @@ export default function SignIn({ csrfToken, providers }) {
     return false;
   };
 
+  // handle form input by user
   const handleFormInput = (e) => {
     setSigninError('');
     setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
     setUserInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  // handle submission of credentials
   const handleCredentialsSubmit = async (e) => {
     e.preventDefault();
     if (userInfo.email === '') {
@@ -44,6 +48,8 @@ export default function SignIn({ csrfToken, providers }) {
     }
 
     setLoading(true);
+
+    // send request to next-auth for credentials signin
     const res = await signIn('credentials', { password: userInfo.password, email: userInfo.email, redirect: false });
     if (res.status !== 200) {
       setSigninError(res.error);
@@ -56,6 +62,7 @@ export default function SignIn({ csrfToken, providers }) {
     router.push('/');
   };
 
+  // signin using Github provider
   const handleGithubSubmit = async () => {
     await signIn('github', { callbackUrl: '/' });
   };
@@ -105,6 +112,7 @@ export default function SignIn({ csrfToken, providers }) {
   );
 }
 
+// run serverside code to get providers availabe and CSRF token
 export async function getServerSideProps(context) {
   const providers = await getProviders();
   const csrfToken = await getCsrfToken(context);

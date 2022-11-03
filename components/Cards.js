@@ -10,6 +10,7 @@ import ErrorComponent from './ErrorComponent';
 import SkeletonLoader from './Skeleton';
 import AppContext from '../utils/AppContext';
 
+// import ReactQuill Editor
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
 export default function Cards({ cards, error, edit }) {
@@ -23,6 +24,7 @@ export default function Cards({ cards, error, edit }) {
   const [videoSource, setVideoSource] = useState('');
   const [pageLoading, setPageLoading] = useState(true);
 
+  // adding the flipping effect
   const front = (id) => {
     document.getElementById(id).classList.add('flip');
   };
@@ -30,9 +32,11 @@ export default function Cards({ cards, error, edit }) {
     document.getElementById(id).classList.remove('flip');
   };
 
+  // like a card
   const handleLikeCard = async (card, id) => {
     const likeButton = document.getElementById(id.toString() + id);
     const numberOfLikes = document.getElementById(id.toString() + id.toString() + id);
+    // send request to api/like-card
     const res = await fetch('/api/like-card', {
       method: 'PUT',
       body: JSON.stringify({ card }),
@@ -46,6 +50,8 @@ export default function Cards({ cards, error, edit }) {
       toast(error, { type: 'error' });
       return;
     }
+
+    // add like button css effect
     if (likeButton.classList.contains('liked')) {
       likeButton.classList.remove('liked');
       numberOfLikes.innerText = parseInt(numberOfLikes.innerText, 10) - 1;
@@ -54,6 +60,8 @@ export default function Cards({ cards, error, edit }) {
       numberOfLikes.innerText = parseInt(numberOfLikes.innerText, 10) + 1;
     }
   };
+
+  // delete a card by sending request to api/delete-card
   const handleCardDelete = async (card) => {
     const res = await fetch('/api/delete-card', {
       method: 'DELETE',

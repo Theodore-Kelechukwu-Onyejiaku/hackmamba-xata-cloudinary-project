@@ -17,6 +17,7 @@ export default function SignIn({ providers }) {
     username: '', fullName: '', email: '', password: '',
   });
 
+  // validate email address
   const validateEmail = (email) => {
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (email.match(emailRegex)) {
@@ -25,11 +26,14 @@ export default function SignIn({ providers }) {
     return false;
   };
 
+  // handle user's input
   const handleFormInput = (e) => {
     setSignupError('');
     setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
     setUserInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  // handle submission for credentials
   const handleCredentialsSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,6 +63,8 @@ export default function SignIn({ providers }) {
     }
 
     setLoading(true);
+
+    // send request to api/signup route
     let res = await fetch('/api/signup', {
       method: 'POST',
       body: JSON.stringify(userInfo),
@@ -80,6 +86,7 @@ export default function SignIn({ providers }) {
     router.push('/api/auth/signin');
   };
 
+  // signup using github
   const handleGithubSubmit = async () => {
     await signIn('github', { callbackUrl: '/' });
   };
@@ -114,6 +121,7 @@ export default function SignIn({ providers }) {
         </form>
         <div className="w-4/5 sm:w-96 md:lg-1/3 lg:w-1/4 mt-5">
 
+          {/* Ensure we have providers already */}
           {providers
             && (
               <div className="w-full" key="github">
@@ -139,6 +147,7 @@ export default function SignIn({ providers }) {
   );
 }
 
+// fetch providers available
 export async function getServerSideProps() {
   const providers = await getProviders();
   return {
