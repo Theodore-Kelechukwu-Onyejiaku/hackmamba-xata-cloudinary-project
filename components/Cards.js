@@ -3,17 +3,23 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { FaVideo } from 'react-icons/fa';
-import { MdOutlineClear, MdOutlineVideocamOff, MdOutlineDeleteOutline } from 'react-icons/md';
+import {
+  MdOutlineClear, MdOutlineVideocamOff, MdOutlineDeleteOutline, MdAdd,
+} from 'react-icons/md';
+import { BsCheck2Circle } from 'react-icons/bs';
 import { TbEdit } from 'react-icons/tb';
 import { toast } from 'react-toastify';
+import AOS from 'aos';
 import ErrorComponent from './ErrorComponent';
 import SkeletonLoader from './SkeletonLoader';
 import AppContext from '../utils/AppContext';
+import 'aos/dist/aos.css';
 
 // import ReactQuill Editor
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
 export default function Cards({ cards, error, edit }) {
+  const animations = ['fade-uup', 'fade-right', 'flip-left', 'zoom-in-down', 'zoom-in', 'flip-down', 'slide-right', 'slide-down'];
   const { searchValue, setSearchValue } = useContext(AppContext);
   const session = useSession();
   const { data } = session;
@@ -30,6 +36,24 @@ export default function Cards({ cards, error, edit }) {
   };
   const back = (id) => {
     document.getElementById(id).classList.remove('flip');
+  };
+
+  // add to collection
+  const addToCollection = async (card) => {
+    const res = await fetch('/api/collect-card', {
+      method: 'PUT',
+      body: JSON.stringify({ card }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const { error } = await res.json();
+    if (error) {
+      toast(error, { type: 'error' });
+      return;
+    }
+    toast('Card Added to Collections', { type: 'success' });
+    router.replace(router.asPath);
   };
 
   // like a card
@@ -90,6 +114,7 @@ export default function Cards({ cards, error, edit }) {
   };
 
   useEffect(() => {
+    AOS.init();
     setPageLoading(false);
   }, []);
   if (pageLoading) {
@@ -103,7 +128,7 @@ export default function Cards({ cards, error, edit }) {
   return (
     <div className="mx-5 mt-5">
       <div className="w-full md:hidden">
-        <input value={searchValue} onChange={(e) => { setSearchValue(e.target.value); }} type="text" className="w-full p-2 border rounded-md text-black dark:placeholder:text-black placeholder:text-color-light" placeholder="Search for flashcard by name" />
+        <input value={searchValue} onChange={(e) => { setSearchValue(e.target.value); }} type="text" className="w-full p-2 border rounded-md text-black dark:placeholder:text-black placeholder:text-color-light" placeholder="Search for flashcard by name or category" />
       </div>
       {imageOpen
         && (
@@ -125,21 +150,25 @@ export default function Cards({ cards, error, edit }) {
         {cards?.length ? cards.filter((card) => {
           if (searchValue === '') {
             return card;
-          } if (card?.name.toLowerCase().includes(searchValue.toLowerCase())) {
+          } if (card?.name.toLowerCase().includes(searchValue.toLowerCase()) || card.category.includes(searchValue.toLowerCase())) {
             return card;
           }
         })?.map((card) => (
           <>
-            <div style={{ background: card.color }} key={card.id} className="my-5 w-96  md:w-full relative dark:bg-slate-800 rounded-xl shadow-2xl pb-10 md:pb-0">
+            <div data-aos={animations[Math.floor(Math.random() * animations.length)]} style={{ background: card.color }} key={card.id} className="my-5 w-full  md:w-full relative dark:bg-slate-800 rounded-xl shadow-2xl pb-10 md:pb-0">
               <figure className="flex  flex-col md:flex-row">
                 <div className="md:w-2/4 p-4">
                   <img alt="card" onClick={() => { handleImageOpen(card.image); }} className="md:w-full w-full h-60 md:h-full md:h-2/2 object-contain rounded-xl cursor-pointer" src={card.image} />
                 </div>
                 <div className="flex md:flex-col md:text-left md:p-0 p-2 md:w-full md:h-1/2">
                   <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} w-full md:pt-0 p-5`}>
-                    <figcaption className="font-medium">
+                    <figcaption className="font-medium my-5">
                       <div className="text-sky-500 dark:text-sky-400 md:py-0 py-3">
                         {card.name}
+                        {' '}
+                        -
+                        {' '}
+                        <span className="text-orange-500 underline">{card.category}</span>
                       </div>
                     </figcaption>
                     <div className="card-container border p-1 overscroll-contain  overflow-y-scroll w-full">
@@ -165,35 +194,46 @@ export default function Cards({ cards, error, edit }) {
                       </div>
                     </div>
                     <div>
-                      <div className="flex items-center">
-                        {card?.user?.profilePicture ? <img alt="profile" className="h-10 w-10 rounded-full" src={card?.user?.profilePicture} /> : (
-                          <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
-                            {card?.user?.fullName[0]}
-                          </span>
-                        )}
-                        <p className="text-sm my-5 ml-3">{card?.user?.fullName}</p>
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center">
+                          {card?.user?.profilePicture ? <img alt="profile" className="h-10 w-10 rounded-full" src={card?.user?.profilePicture} /> : (
+                            <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
+                              {card?.user?.fullName[0]}
+                            </span>
+                          )}
+                          <p className="text-sm my-5 ml-3">{card?.user?.fullName}</p>
+                        </div>
+                        <div className="relative">
+                          <div><span id={card.id.toString() + card.id} onClick={() => { handleLikeCard(card, card.id); }} className={`${card.likes.includes(data?.user?.id) ? ' liked ' : ' '} border heart-icon outline-none border-none block`} /></div>
+                          <div className=" absolute right-5 bottom-0">
+                            <span id={card.id.toString() + card.id + card.id} className="">{card.likes.length}</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="p-2 md:flex space-x-5 hidden">
-                        <button type="button" onClick={() => { back(card.id); }} className="p-2 bg-black border text-white rounded-md">Front</button>
-                        <button type="button" onClick={() => { front(card.id); }} className="p-2 bg-black border text-white rounded-md">Back</button>
+                        <div>
+                          <button type="button" onClick={() => { back(card.id); }} className="p-2 bg-black border text-white rounded-md">Front</button>
+                          <button type="button" onClick={() => { front(card.id); }} className="p-2 bg-black border text-white rounded-md">Back</button>
+                        </div>
+                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} flex flex-row ml-5 items-center justify-start pr-5`}>
+                          {card?.collectors?.includes(data?.user?.id) ? <BsCheck2Circle className="text-4xl mr-4" /> : <MdAdd className="text-4xl mr-4" onClick={() => { addToCollection(card); }} />}
+                          {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video); }} className={`${card.color === '#FFFFFF' ? 'text-black dark:text-black' : 'text-white dark:text-white'} text-4xl animate-pulse  z-40 cursor-pointer font-extrabold`} />
+                            : <MdOutlineVideocamOff className={`${card.color === '#FFFFFF' ? 'text-black' : 'text-white'} text-4xl animate-pulse text-white z-40 cursor-not-allowed font-extrabold`} />}
+                        </div>
                       </div>
                     </div>
-
                   </div>
-
-                  <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} bottom-0 right-0 absolute flex flex-row items-center justify-start mt-10 md:mt-0 pr-5 py-4`}>
-                    <div className="relative flex-row items-center justify-center"><span id={card.id.toString() + card.id} onClick={() => { handleLikeCard(card, card.id); }} className={`${card.likes.includes(data?.user?.id) ? ' liked ' : ' '} border heart-icon outline-none border-none block`} /></div>
-                    <div className="relative flex items-center h-12  w-12">
-                      <span id={card.id.toString() + card.id + card.id} className="text-sm relative -left-8">{card.likes.length}</span>
-                    </div>
+                </div>
+                <div className="ml-5 flex items-center md:space-x-5 md:hidden">
+                  <div>
+                    <button type="button" onClick={() => { back(card.id); }} className="p-3 bg-black rounded-md text-white border">Front</button>
+                    <button type="button" onClick={() => { front(card.id); }} className="p-3 bg-black rounded-md text-white border">Back</button>
+                  </div>
+                  <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} flex ml-5   pr-5`}>
+                    {card?.collectors?.includes(data?.user?.id) ? <BsCheck2Circle className="text-4xl mr-4" /> : <MdAdd className="text-4xl mr-4" onClick={() => { addToCollection(card); }} />}
                     {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video); }} className={`${card.color === '#FFFFFF' ? 'text-black dark:text-black' : 'text-white dark:text-white'} text-4xl animate-pulse  z-40 cursor-pointer font-extrabold`} />
                       : <MdOutlineVideocamOff className={`${card.color === '#FFFFFF' ? 'text-black' : 'text-white'} text-4xl animate-pulse text-white z-40 cursor-not-allowed font-extrabold`} />}
                   </div>
-
-                </div>
-                <div className="ml-5 flex space-x-5 md:hidden">
-                  <button type="button" onClick={() => { back(card.id); }} className="p-3 bg-black rounded-md text-white border">Front</button>
-                  <button type="button" onClick={() => { front(card.id); }} className="p-3 bg-black rounded-md text-white border">Back</button>
                 </div>
               </figure>
             </div>

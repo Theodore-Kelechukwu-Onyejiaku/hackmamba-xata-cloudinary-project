@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@xata.io/client": "^0.19.1",
+    "aos": "^2.3.4",
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.32.0",
     "datauri": "^4.1.0",
@@ -18,6 +19,7 @@
     "next-auth": "^4.15.0",
     "next-connect": "^0.13.0",
     "react": "18.2.0",
+    "react-animate-on-scroll": "^2.1.5",
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
     "react-quill": "^2.0.0",

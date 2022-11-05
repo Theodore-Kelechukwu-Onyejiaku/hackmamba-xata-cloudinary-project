@@ -25,6 +25,7 @@ export default function Create() {
   const [imageError, setImageError] = useState('');
   const [videoError, setVideoError] = useState('');
   const [cardName, setCardName] = useState('');
+  const [category, setCategory] = useState('');
   const [cardColor, setCardColor] = useState('#FFFFFF');
   const [loading, setLoading] = useState(false);
 
@@ -106,8 +107,8 @@ export default function Create() {
   }
 
   const handleSubmit = async () => {
-    if (!cardName || !front || !back || !image) {
-      toast('Please enter required fields', { type: 'error' });
+    if (!cardName || !front || !back || !image || !category) {
+      toast('Please enter required fields with asterisk', { type: 'error' });
       return;
     }
     setLoading(true);
@@ -118,7 +119,7 @@ export default function Create() {
     formData.append('back', back);
     formData.append('image', image);
     formData.append('video', video);
-
+    formData.append('category', category);
     const res = await fetch('/api/create-card', {
       method: 'POST',
       body: formData,
@@ -141,15 +142,28 @@ export default function Create() {
         : (
           <div className="">
             <div className="my-5">
-              <label>
+              <label className="font-bold">
                 Name of Card
                 <span className="text-red-400">*</span>
               </label>
               <input onChange={handleCardName} value={cardName} className="w-full text-black border p-2 my-5 dark:placeholder:text-gray-600" placeholder="Xata Multiple-Select" />
             </div>
+            <div className="my-5">
+              <label className="font-bold">
+                Card Category
+                <span className="text-red-400">*</span>
+              </label>
+              <select name="category" onChange={(e) => { setCategory(e.target.value); }} className="block my-5">
+                <option value="">__Select__</option>
+                <option value="programming">Programming</option>
+                <option value="science">Science</option>
+                <option value="art">art</option>
+                <option value="mathematics">Programming</option>
+              </select>
+            </div>
             {/* SELECT CARD COLOR */}
             <div>
-              <h1 className="my-5 dark:text-white">
+              <h1 className="my-5 dark:text-white font-bold">
                 Select Card Color
                 <span className="text-red-400">*</span>
               </h1>
@@ -162,7 +176,9 @@ export default function Create() {
             <div className="my-5">
               <div className="">
                 <label>
-                  Select Picture (Max 5MB)
+                  Select Picture
+                  {' '}
+                  <span className="text-red-500">(Max 5MB)</span>
                   <span className="text-red-400">*</span>
                 </label>
                 <p className="my-5 text-red-400">{imageError}</p>
@@ -172,7 +188,11 @@ export default function Create() {
             </div>
 
             <div className="my-5">
-              <label>Select Video (Max 5MB)</label>
+              <label>
+                Select Video
+                {' '}
+                <span className="text-red-500">(Max 5MB)</span>
+              </label>
               <p className="my-5 text-red-400">{videoError}</p>
               <input type="file" onChange={handleVideoChange} className="block my-5" accept="video/mp4,video/x-m4v,video/*" />
               {video && (

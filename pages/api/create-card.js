@@ -60,6 +60,7 @@ const handler = nc({
 
       const card = await xata.db.Cards.create({
         name: req.body.cardName,
+        category: req.body.category,
         color: req.body.cardColor,
         front: req.body.front,
         back: req.body.back,

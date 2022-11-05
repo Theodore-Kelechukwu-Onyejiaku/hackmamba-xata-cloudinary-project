@@ -33,7 +33,7 @@ export default function Header() {
             <Link href="/"><span className="cursor-pointer text-2xl nd:text-3xl font-thin">HackFlashC</span></Link>
           </div>
           <div className="w-full hidden md:block">
-            <input value={searchValue} onChange={(e) => { setSearchValue(e.target.value); }} type="text" className="w-full p-2 border rounded-md text-black dark:placeholder:text-black placeholder:text-color-light" placeholder="Search for flashcard by name" />
+            <input value={searchValue} onChange={(e) => { setSearchValue(e.target.value); }} type="text" className="w-full p-2 border rounded-md text-black dark:placeholder:text-black placeholder:text-color-light" placeholder="Search for flashcard by name or category" />
           </div>
         </div>
 
@@ -53,7 +53,11 @@ export default function Header() {
                   <span className="cursor-pointer hover:text-gray-400">My Cards</span>
                 </Link>
               </div>
-
+              <div className="hidden md:flex items-center justify-around mr-3 md:mr-5 cursor-pointer">
+                <Link href="/my-collections" className="">
+                  <span className="cursor-pointer hover:text-gray-400">My Collections</span>
+                </Link>
+              </div>
             </>
           )
             : (
@@ -79,11 +83,25 @@ export default function Header() {
             && (
               <div className="ml-0 md:ml-5 flex flex-col relative z-50">
                 <div onClick={() => { setToggled(!toggled); }} className="flex w-40 md:w-fit items-center justify-end space-x-4 cursor-pointer md:cursor-default bg-white dark:bg-slate-800   relative z-50 mr-0">
-                  {userProfile ? <img className="w-12 border rounded-full h-12" alt="profile" src={userProfile} />
+                  {userProfile ? (
+                    <>
+                      <Link href="/profile">
+                        <img className="w-12 border cursor-pointer hidden md:block rounded-full h-12" alt="profile" src={userProfile} />
+                      </Link>
+                      <img className="w-12 border block md:hidden rounded-full h-12" alt="profile" src={userProfile} />
+                    </>
+                  )
                     : (
-                      <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
-                        {data?.user?.fullName[0]}
-                      </span>
+                      <>
+                        <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
+                          {data?.user?.fullName[0]}
+                        </span>
+                        <Link href="/profile">
+                          <span className="uppercase hidden text-xl md:block  w-12  h-12 text-center p-2 border rounded-full">
+                            {data?.user?.fullName[0]}
+                          </span>
+                        </Link>
+                      </>
                     )}
                   <span className={`${toggled ? 'rotate-180' : 'rotate-0'} transition-all duration-500 md:hidden p-3`}><SlArrowDown /></span>
                 </div>
@@ -98,6 +116,7 @@ export default function Header() {
                   <Link href="/create"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-300`}>Create</span></Link>
                   <Link href="/about"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-500`}>About</span></Link>
                   <Link href="/my-cards"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-700`}>My Cards</span></Link>
+                  <Link href="/my-collections"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-700`}>My Collections</span></Link>
                   <p onClick={handleSignout} className="flex items-center justify-center cursor-pointer text-color-orange text-center p-2 hover:text-gray-400">
                     <SlLogout />
                     <span className="ml-4">Logout</span>

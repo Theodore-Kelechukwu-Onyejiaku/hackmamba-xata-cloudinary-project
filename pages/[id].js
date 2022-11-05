@@ -19,6 +19,7 @@ export default function Card({ card, error }) {
   const session = useSession();
   const { data } = session;
   const [back, setBack] = useState(card?.back);
+  const [category, setCategory] = useState(card?.categoruy);
   const [front, setFront] = useState(card?.front);
   const [cardName, setCardName] = useState(card?.name);
   const [newImage, setNewImage] = useState(null);
@@ -34,7 +35,7 @@ export default function Card({ card, error }) {
     const res = await fetch('/api/update-card-body', {
       method: 'POST',
       body: JSON.stringify({
-        front, back, cardName, card,
+        front, back, cardName, card, category,
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -188,6 +189,16 @@ export default function Card({ card, error }) {
                 <div className="my-20">
                   <h2 className="my-5 font-bold">Card Name</h2>
                   <input type="text" value={cardName} onChange={(e) => { setCardName(e.target.value); }} className="w-full border p-2 text-black" />
+                </div>
+                <div>
+                  <h2 className="my-5 font-bold">Card Category</h2>
+                  <select defaultValue={card.category} name="category" onChange={(e) => { setCategory(e.target.value); }}>
+                    <option value="">__Select__</option>
+                    <option value="programming">Programming</option>
+                    <option value="science">Science</option>
+                    <option value="art">art</option>
+                    <option value="mathematics">Programming</option>
+                  </select>
                 </div>
                 <div className="my-20">
                   <h2 className="my-5 font-bold">Card Front</h2>
