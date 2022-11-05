@@ -49,6 +49,7 @@ const handler = nc({
         return uploadedVideoResponse;
       };
 
+      // saving information
       const createdImage = await createImage(image);
       const imageUrl = createdImage.url;
       const image_id = createdImage.public_id;
@@ -58,6 +59,7 @@ const handler = nc({
       const video_id = createdVideo?.public_id;
       const video_signature = createVideo?.signature;
 
+      // creating a new card
       const card = await xata.db.Cards.create({
         name: req.body.cardName,
         category: req.body.category,
@@ -71,7 +73,6 @@ const handler = nc({
         video_id,
         video_signature,
         user: token.user.id,
-        likes: [],
       });
       res.json({ error: null, data: card });
     } catch (error) {
