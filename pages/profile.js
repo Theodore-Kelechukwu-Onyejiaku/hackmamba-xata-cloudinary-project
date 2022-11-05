@@ -3,13 +3,17 @@ import { useRouter } from 'next/router';
 import { getToken } from 'next-auth/jwt';
 import { FaEye, FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
+import { includes } from '@xata.io/client';
 import { getXataClient } from '../utils/xata';
 import ErrorComponent from '../components/ErrorComponent';
 import SkeletonLoader from '../components/SkeletonLoader';
 import Loading from '../components/Loading';
 import AppContext from '../utils/AppContext';
 
-export default function profile({ error, user, cards }) {
+export default function profile({
+  error, user, cards, collections,
+}) {
   const router = useRouter();
   const { setProfilePicture } = useContext(AppContext);
   const [componentLoading, setComponentLoading] = useState(true);
@@ -61,34 +65,35 @@ export default function profile({ error, user, cards }) {
     <div className="dark:bg-black dark:text-white">
       <div className="mx-5">
         <h1 className="my-5 text-3xl">
-          Welcome
+          Welcome,
+          {' '}
+          {' '}
           {user.fullName}
         </h1>
         <div>
           <h1 className="my-5">Your Profile Picture</h1>
           <div className="my-5">
-            {user.profilePicture ? <img alt="profile" className="w-36 h-36 rounded-full" src={user.profilePicture} />
+            {user.profilePicture ? <img alt="profile" className="w-36 h-36 rounded-full my-5" src={user.profilePicture} />
               : <FaUser size={100} className="my-5 border p-5" />}
-            <div>
+            <div className="my-5">
               <label>Replace Image </label>
               <input type="file" onChange={handleSelectImage} name="image" className="my-5 block" />
               {imageUploading ? <Loading /> : <button type="button" onClick={handleImageChange} className="border p-2 bg-black text-white rounded">Change</button>}
             </div>
           </div>
         </div>
-        <div className="flex flex-col mb-20 space-y-5 md:flex-row items-center md:space-x-5 justify-center">
+        <div className="flex flex-col mb-20 pb-20 md:mb-0 md:space-y-0 space-y-5 md:flex-row items-center md:space-x-5 justify-center">
           <div className="p-20 rounded-md w-96 flex flex-col justify-center items-center text-center border">
             <span>Number of cards</span>
             <span className="text-4xl">{cards.length}</span>
-            <FaEye />
+            <Link href="/my-cards"><FaEye className="text-3xl" /></Link>
           </div>
           <div className="p-20 rounded-md w-96 flex flex-col justify-center items-center text-center border">
             <span>Number of Collections</span>
             <span className="text-4xl">
-              {cards.collections}
-              0
+              {collections.length}
             </span>
-            <FaEye />
+            <Link href="/my-collections"><FaEye className="text-3xl" /></Link>
           </div>
         </div>
       </div>
@@ -107,11 +112,22 @@ export const getServerSideProps = async ({ req }) => {
   }
   try {
     const xata = getXataClient();
-    const [user, cards] = await Promise.allSettled([xata.db.Users.read(token.user.id), xata.db.Cards.filter('user.id', token.user.id)
-      .select(['*', 'user.*'])
-      .getAll()]);
+    const [user, cards, collections] = await Promise.allSettled(
+      [xata.db.Users.read(token.user.id), xata.db.Cards.filter('user.id', token.user.id)
+        .select(['*', 'user.*'])
+        .getAll(),
+      xata.db.Cards.filter(
+        'collectors',
+        includes(token.user.id),
+      )
+        .select(['*', 'user.*'])
+        .getAll(),
+      ],
+    );
     return {
-      props: { error: null, user: user.value, cards: cards.value },
+      props: {
+        error: null, user: user.value, cards: cards.value, collections: collections.value,
+      },
     };
   } catch (error) {
     return { props: { error: error.message, data: null } };
