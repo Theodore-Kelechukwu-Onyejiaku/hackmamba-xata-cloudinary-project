@@ -1,17 +1,29 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { SlArrowDown } from 'react-icons/sl';
-import { useContext, useState } from 'react';
+import { SlArrowDown, SlLogout, SlUser } from 'react-icons/sl';
+import { useContext, useEffect, useState } from 'react';
 import AppContext from '../utils/AppContext';
 
 export default function Header() {
-  const { searchValue, setSearchValue } = useContext(AppContext);
+  const { searchValue, setSearchValue, profilePicture } = useContext(AppContext);
   const [toggled, setToggled] = useState(false);
+  const [userProfile, setUserProfile] = useState("")
   const session = useSession();
+
   const { status, data } = session;
   const handleSignout = () => {
     signOut({ callbackUrl: '/api/auth/signin' });
   };
+
+  const fetchUserProfile = async () => {
+    const user = await fetch("/api/fetch-user-profile?userId=" + data?.user?.id)
+    const response = await user.json()
+    setUserProfile(response?.profilePicture)
+  }
+
+  useEffect(() => {
+    fetchUserProfile()
+  })
 
   return (
     <div className="m-0 fixed border dark:border-none dark:bg-slate-800 bg-white dark:text-white py-3 top-0 w-full z-50">
@@ -67,19 +79,29 @@ export default function Header() {
             && (
               <div className="ml-0 md:ml-5 flex flex-col relative z-50">
                 <div onClick={() => { setToggled(!toggled); }} className="flex w-40 md:w-fit items-center justify-end space-x-4 cursor-pointer md:cursor-default bg-white dark:bg-slate-800   relative z-50 mr-0">
-                  <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
-                    {data?.user?.fullName.split(' ')[0].split('')[0]}
-                  </span>
+                  {userProfile ? <img className='w-12 border rounded-full h-12' alt='profile' src={userProfile} />
+                    :
+                    <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
+                      {data?.user?.fullName[0]}
+                    </span>}
                   <span className={`${toggled ? 'rotate-180' : 'rotate-0'} transition-all duration-500 md:hidden p-3`}><SlArrowDown /></span>
                 </div>
 
-                <div className={`${toggled ? 'top-12 z-50 bg-white' : '-z-50  border-none'} flex flex-col absolute top-0 w-full dark:bg-slate-800 transition-all duration-500 border border-t-0 dark:border-none md:hidden`}>
-                  <Link href="/create"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-75`}>Create</span></Link>
-                  <Link href="/about"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-100`}>About</span></Link>
-                  <Link href="/my-cards"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-500`}>My Cards</span></Link>
-                  <span onClick={handleSignout} className="cursor-pointer text-color-orange text-center p-2 hover:text-gray-400">Logout</span>
+                <div className={`${toggled ? 'top-12 z-50 bg-white' : '-z-50 top-0 border-none'} flex flex-col absolute -z-50 top-0 w-full -right-3 dark:bg-slate-800 transition-all duration-500 border border-t-0 dark:border-none md:hidden`}>
+                  <Link href="/profile">
+                    <p onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0 top-5'} relative cursor-pointer hover:text-gray-400 text-center flex items-center justify-center transition-all duration-150`}>
+                      <SlUser size={24} className="border rounded-full p-1" />
+                      <span className="ml-3">Profile</span>
+                    </p>
+                  </Link>
+                  <Link href="/create"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-300`}>Create</span></Link>
+                  <Link href="/about"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-500`}>About</span></Link>
+                  <Link href="/my-cards"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-700`}>My Cards</span></Link>
+                  <p onClick={handleSignout} className="flex items-center justify-center cursor-pointer text-color-orange text-center p-2 hover:text-gray-400">
+                    <SlLogout />
+                    <span className="ml-4">Logout</span>
+                  </p>
                 </div>
-
               </div>
             )
             : null}
@@ -88,3 +110,4 @@ export default function Header() {
     </div>
   );
 }
+

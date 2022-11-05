@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getToken } from 'next-auth/jwt';
 import Link from 'next/link';
 import Cards from '../components/Cards';
-import SkeletonLoader from '../components/Skeleton';
+import SkeletonLoader from '../components/SkeletonLoader';
 import { getXataClient } from '../utils/xata';
 import ErrorComponent from '../components/ErrorComponent';
 
@@ -48,13 +48,10 @@ export const getServerSideProps = async ({ req }) => {
   }
   try {
     const xata = getXataClient();
-    const { records: cards } = await xata.db.Cards.filter('user.id', token.user.id)
+    const cards = await xata.db.Cards.filter('user.id', token.user.id)
       .select(['*', 'user.*'])
-      .getPaginated({
-        pagination: {
-          size: 15,
-        },
-      });
+      .getAll();
+
     return {
       props: { error: null, data: cards },
     };

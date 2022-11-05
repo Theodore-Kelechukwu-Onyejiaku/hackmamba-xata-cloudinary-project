@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import LoginToContinue from '../components/LoginToContinue';
-import SkeletonLoader from '../components/Skeleton';
+import SkeletonLoader from '../components/SkeletonLoader';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import { modules, formats } from '../utils/editor';

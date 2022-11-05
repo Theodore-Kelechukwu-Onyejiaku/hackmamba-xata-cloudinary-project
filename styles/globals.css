@@ -7,7 +7,8 @@
 @import url("./like.button.css");
 @import url("./flip.css");
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -17,35 +18,44 @@ body #__next {
 }
 
 body .content {
-        margin-top: 92px;
-        padding-top: 0.25rem;
+    margin-top: 92px;
+    padding-top: 0.25rem;
 }
 
-code.dark{
-background-color: red;
+code.dark {
+    background-color: red;
 }
-#preview.dark\:text-white code{
+
+/* #preview.dark\:text-white code{
     color:black;
     background-color: white;
+} */
+
+.ql-bubble .ql-editor code,
+.ql-bubble .ql-editor pre {
+    /* background-color: #151718; */
+    /* display: inline-block !important; */
 }
 
-#editor.dark\:text-white code{
-    color:black;
-    background-color: white;
+#editor.dark\:text-white code {
+    color: black;
 }
 
-.ql-clipboard{
+.ql-clipboard {
     visibility: hidden;
     display: none;
 }
-.ql-tooltip-editor input{
+
+.ql-tooltip-editor input {
     display: none;
 }
 
 
 code {
-    color: black;
-    background-color: white;
-    padding: 5px;
+    display: inline-block !important;
+    color: #e5cd6a !important;
+    background-color: #151718 !important;
+    padding: 15px !important;
+    width: 100% !important;
     line-height: 25px;
 }

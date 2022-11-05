@@ -7,14 +7,14 @@ import { MdOutlineClear, MdOutlineVideocamOff, MdOutlineDeleteOutline } from 're
 import { TbEdit } from 'react-icons/tb';
 import { toast } from 'react-toastify';
 import ErrorComponent from './ErrorComponent';
-import SkeletonLoader from './Skeleton';
+import SkeletonLoader from './SkeletonLoader';
 import AppContext from '../utils/AppContext';
 
 // import ReactQuill Editor
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
 export default function Cards({ cards, error, edit }) {
-  const { searchValue } = useContext(AppContext);
+  const { searchValue, setSearchValue } = useContext(AppContext);
   const session = useSession();
   const { data } = session;
   const router = useRouter();
@@ -102,6 +102,9 @@ export default function Cards({ cards, error, edit }) {
 
   return (
     <div className="mx-5 mt-5">
+      <div className="w-full md:hidden">
+        <input value={searchValue} onChange={(e) => { setSearchValue(e.target.value); }} type="text" className="w-full p-2 border rounded-md text-black dark:placeholder:text-black placeholder:text-color-light" placeholder="Search for flashcard by name" />
+      </div>
       {imageOpen
         && (
           <div className="h-screen fixed -top-0 bg-black bg-opacity-90 z-50 w-full left-0 mx-0 flex flex-col justify-center items-center p-10">
@@ -122,12 +125,12 @@ export default function Cards({ cards, error, edit }) {
         {cards?.length ? cards.filter((card) => {
           if (searchValue === '') {
             return card;
-          } if (card?.name.toLowerCase().includes(searchValue)) {
+          } if (card?.name.toLowerCase().includes(searchValue.toLowerCase())) {
             return card;
           }
         })?.map((card) => (
           <>
-            <div style={{ background: card.color }} key={card.id} className="my-5 w-96  md:w-full relative dark:bg-slate-800 drop-shadow-2xl rounded-xl shadow-2xl pb-10 md:pb-0">
+            <div style={{ background: card.color }} key={card.id} className="my-5 w-96  md:w-full relative dark:bg-slate-800 rounded-xl shadow-2xl pb-10 md:pb-0">
               <figure className="flex  flex-col md:flex-row">
                 <div className="md:w-2/4 p-4">
                   <img alt="card" onClick={() => { handleImageOpen(card.image); }} className="md:w-full w-full h-60 md:h-full md:h-2/2 object-contain rounded-xl cursor-pointer" src={card.image} />
@@ -139,20 +142,21 @@ export default function Cards({ cards, error, edit }) {
                         {card.name}
                       </div>
                     </figcaption>
-                    <div className="card-container border rounded-3xl w-full">
+                    <div className="card-container border p-1 overscroll-contain  overflow-y-scroll w-full">
                       <div className="card" id={card.id}>
-                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} front font-medium text-xs text-left`}>
+                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} front font-medium overflow-y-scroll text-left`}>
                           <ReactQuill
-                            style={{ position: 'relative' }}
+                            className="overflow-y-scroll"
                             readOnly
                             theme="bubble"
                             value={card.front}
                           />
 
                         </div>
-                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} back font-medium text-xs text-left`}>
+                        <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} back font-medium text-left overflow-y-scroll`}>
                           {/* {card.back} */}
                           <ReactQuill
+                            className="overflow-y-scroll"
                             value={card.back}
                             readOnly
                             theme="bubble"
@@ -161,7 +165,12 @@ export default function Cards({ cards, error, edit }) {
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm my-5">{card?.user?.fullName}</p>
+                      <div className='flex items-center'>
+                        {card?.user?.profilePicture ? <img className="h-10 w-10 rounded-full" src={card?.user?.profilePicture} /> : <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
+                          {card?.user?.fullName[0]}
+                        </span>}
+                        <p className="text-sm my-5 ml-3">{card?.user?.fullName}</p>
+                      </div>
                       <div className="p-2 md:flex space-x-5 hidden">
                         <button type="button" onClick={() => { back(card.id); }} className="p-2 bg-black border text-white rounded-md">Front</button>
                         <button type="button" onClick={() => { front(card.id); }} className="p-2 bg-black border text-white rounded-md">Back</button>

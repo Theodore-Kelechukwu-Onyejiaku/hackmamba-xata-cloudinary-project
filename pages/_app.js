@@ -5,8 +5,10 @@ import Layout from '../components/Layout';
 import AppContext from '../utils/AppContext';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+  console.log("The")
   const [theme, setTheme] = useState('');
   const [searchValue, setSearchValue] = useState('');
+  const [profilePicture, setProfilePicture] = useState("");
 
   useEffect(() => {
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -21,7 +23,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
       <AppContext.Provider value={{
-        theme, setTheme, searchValue, setSearchValue,
+        theme, setTheme, searchValue, setSearchValue, profilePicture, setProfilePicture
       }}
       >
         <Layout>
@@ -31,5 +33,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     </SessionProvider>
   );
 }
+
 
 export default MyApp;
