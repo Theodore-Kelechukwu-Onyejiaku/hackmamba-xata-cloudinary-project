@@ -29,8 +29,7 @@ export default function MyCollections({ data, error }) {
 
         {data?.length ? <Cards cards={data} /> : (
           <div className="flex flex-col h-screen justify-center items-center text-center my-5">
-            <p>Sorry you have no cards at the moment!</p>
-            <Link href="/create"><span className="text-red-500 underline cursor-pointer">Click here to create a card</span></Link>
+            <p>Sorry you have no collections at the moment!</p>
           </div>
         )}
       </div>

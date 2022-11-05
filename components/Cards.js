@@ -19,7 +19,7 @@ import 'aos/dist/aos.css';
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
 export default function Cards({ cards, error, edit }) {
-  const animations = ['fade-uup', 'fade-right', 'flip-left', 'zoom-in-down', 'zoom-in', 'flip-down', 'slide-right', 'slide-down'];
+  const animations = ['fade-up', 'fade-right', 'flip-left', 'zoom-in-down', 'zoom-in', 'flip-down', 'slide-right', 'zoom-out-right'];
   const { searchValue, setSearchValue } = useContext(AppContext);
   const session = useSession();
   const { data } = session;
