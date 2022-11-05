@@ -25,7 +25,6 @@ export const authOptions = {
       async authorize(credentials, req) {
         // check if user already exists
         const user = await xata.db.Users.filter('email', req.body.email).getFirst();
-        console.log(user)
         // if user does not exist
         if (!user) {
           // return res.json({ data: null, error: "Account does not exists" })

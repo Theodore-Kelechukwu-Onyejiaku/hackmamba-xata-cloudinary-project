@@ -165,10 +165,12 @@ export default function Cards({ cards, error, edit }) {
                       </div>
                     </div>
                     <div>
-                      <div className='flex items-center'>
-                        {card?.user?.profilePicture ? <img className="h-10 w-10 rounded-full" src={card?.user?.profilePicture} /> : <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
-                          {card?.user?.fullName[0]}
-                        </span>}
+                      <div className="flex items-center">
+                        {card?.user?.profilePicture ? <img alt="profile" className="h-10 w-10 rounded-full" src={card?.user?.profilePicture} /> : (
+                          <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
+                            {card?.user?.fullName[0]}
+                          </span>
+                        )}
                         <p className="text-sm my-5 ml-3">{card?.user?.fullName}</p>
                       </div>
                       <div className="p-2 md:flex space-x-5 hidden">

@@ -4,7 +4,6 @@ import cloudinary from '../../utils/cloudinary';
 
 const handler = async (req, res) => {
   try {
-    console.log('hmmm');
     const xata = getXataClient();
     const token = await getToken({ req });
     if (!token) {

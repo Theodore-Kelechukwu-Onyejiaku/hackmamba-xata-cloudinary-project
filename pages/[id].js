@@ -227,7 +227,6 @@ export default function Card({ card, error }) {
 export async function getStaticPaths() {
   const xata = getXataClient();
   const cards = await xata.db.Cards.select(['*', 'user.*']).getAll();
-  console.log(cards);
   const paths = cards.map((card) => ({
     params: { id: card.id },
   }));

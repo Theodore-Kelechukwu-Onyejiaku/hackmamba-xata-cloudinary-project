@@ -7,7 +7,7 @@ import AppContext from '../utils/AppContext';
 export default function Header() {
   const { searchValue, setSearchValue, profilePicture } = useContext(AppContext);
   const [toggled, setToggled] = useState(false);
-  const [userProfile, setUserProfile] = useState("")
+  const [userProfile, setUserProfile] = useState('');
   const session = useSession();
 
   const { status, data } = session;
@@ -16,14 +16,14 @@ export default function Header() {
   };
 
   const fetchUserProfile = async () => {
-    const user = await fetch("/api/fetch-user-profile?userId=" + data?.user?.id)
-    const response = await user.json()
-    setUserProfile(response?.profilePicture)
-  }
+    const user = await fetch(`/api/fetch-user-profile?userId=${data?.user?.id}`);
+    const response = await user.json();
+    setUserProfile(response?.profilePicture);
+  };
 
   useEffect(() => {
-    fetchUserProfile()
-  })
+    fetchUserProfile();
+  });
 
   return (
     <div className="m-0 fixed border dark:border-none dark:bg-slate-800 bg-white dark:text-white py-3 top-0 w-full z-50">
@@ -79,11 +79,12 @@ export default function Header() {
             && (
               <div className="ml-0 md:ml-5 flex flex-col relative z-50">
                 <div onClick={() => { setToggled(!toggled); }} className="flex w-40 md:w-fit items-center justify-end space-x-4 cursor-pointer md:cursor-default bg-white dark:bg-slate-800   relative z-50 mr-0">
-                  {userProfile ? <img className='w-12 border rounded-full h-12' alt='profile' src={userProfile} />
-                    :
-                    <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
-                      {data?.user?.fullName[0]}
-                    </span>}
+                  {userProfile ? <img className="w-12 border rounded-full h-12" alt="profile" src={userProfile} />
+                    : (
+                      <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
+                        {data?.user?.fullName[0]}
+                      </span>
+                    )}
                   <span className={`${toggled ? 'rotate-180' : 'rotate-0'} transition-all duration-500 md:hidden p-3`}><SlArrowDown /></span>
                 </div>
 
@@ -110,4 +111,3 @@ export default function Header() {
     </div>
   );
 }
-
