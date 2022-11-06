@@ -49,6 +49,7 @@ export default function Card({ card, error }) {
     }
     toast('Front and Back Updated Successfully!', { type: 'success' });
     setFrontBackLoading(false);
+    router.push('/my-cards');
   };
 
   const handleImageUpdate = async () => {
@@ -72,7 +73,7 @@ export default function Card({ card, error }) {
     }
     toast('Image Replaced Successfully!', { type: 'success' });
     setFileUploading(false);
-    router.replace(router.asPath);
+    router.push('/my-cards');
   };
   const handleVideoUpdate = async () => {
     if (!newVideo) {
@@ -97,7 +98,7 @@ export default function Card({ card, error }) {
     }
     toast('Video Uploaded successfully!', { type: 'success' });
     setFileUploading(false);
-    router.replace(router.asPath);
+    router.push('/my-cards');
   };
 
   const largeFile = (file) => {
@@ -196,8 +197,10 @@ export default function Card({ card, error }) {
                     <option value="">__Select__</option>
                     <option value="programming">Programming</option>
                     <option value="science">Science</option>
-                    <option value="art">art</option>
-                    <option value="mathematics">Programming</option>
+                    <option value="art">Art</option>
+                    <option value="technology">Technology</option>
+                    <option value="technical-writing">Technical Writing</option>
+                    <option value="education">Education</option>
                   </select>
                 </div>
                 <div className="my-20">

@@ -157,8 +157,10 @@ export default function Create() {
                 <option value="">__Select__</option>
                 <option value="programming">Programming</option>
                 <option value="science">Science</option>
-                <option value="art">art</option>
-                <option value="mathematics">Programming</option>
+                <option value="art">Art</option>
+                <option value="technology">Technology</option>
+                <option value="technical-writing">Technical Writing</option>
+                <option value="education">Education</option>
               </select>
             </div>
             {/* SELECT CARD COLOR */}
