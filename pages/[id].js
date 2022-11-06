@@ -30,7 +30,6 @@ export default function Card({ card, error }) {
   const [fileUploading, setFileUploading] = useState(false);
   const [componentLoading, setComponentLoading] = useState(true);
 
-  console.log(data);
   const handleFrontBackUpdate = async () => {
     setFrontBackLoading(true);
     const res = await fetch('/api/update-card-body', {

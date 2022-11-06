@@ -34,7 +34,6 @@ const handler = nc({
 
       // destroy any existing video on cloudinary
       if (req.body.videoId !== 'null') {
-        console.log('I am still working!@');
         await cloudinary.v2.uploader.destroy(req.body.videoId);
       }
 
@@ -50,7 +49,6 @@ const handler = nc({
       });
       res.json({ error: null, data: card });
     } catch (error) {
-      console.log(error);
       res.status(500).json({ error, data: null });
     }
   });
