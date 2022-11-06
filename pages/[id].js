@@ -30,6 +30,7 @@ export default function Card({ card, error }) {
   const [fileUploading, setFileUploading] = useState(false);
   const [componentLoading, setComponentLoading] = useState(true);
 
+  console.log(data);
   const handleFrontBackUpdate = async () => {
     setFrontBackLoading(true);
     const res = await fetch('/api/update-card-body', {
@@ -141,14 +142,14 @@ export default function Card({ card, error }) {
 
   return (
     <div>
-
       {/* check if it is current user that owns the card */}
-      {data?.user.id === card.user.id ? (
+      {data?.user?.id === card?.user?.id ? (
         <div>
           {fileUploading ? <ProcessIndicator /> : (
             <div className="dark:text-white dark:bg-black">
               <div className="mx-5">
                 <h1 className="my-5 text-lg font-extrabold">Edit Card</h1>
+
                 <div className="flex flex-col md:flex-row md:space-x-10 md:justify-center md:items-center">
                   <div className="md:basis-1/2  flex flex-col my-10">
                     <span className="font-bold my-5">Card Image</span>
@@ -238,24 +239,33 @@ export default function Card({ card, error }) {
   );
 }
 
-export async function getStaticPaths() {
+export async function getServerSideProps(context) {
   const xata = getXataClient();
-  const cards = await xata.db.Cards.select(['*', 'user.*']).getAll();
-  const paths = cards.map((card) => ({
-    params: { id: card.id },
-  }));
+  const { id } = context.query;
+  const card = await xata.db.Cards.filter('id', id).select(['*', 'user.*']).getAll();
   return {
-    paths, fallback: true,
+    props: { card: card[0] },
   };
 }
 
-export async function getStaticProps({ params }) {
-  const xata = getXataClient();
-  try {
-    const cards = await xata.db.Cards.filter('id', params.id).select(['*', 'user.*']).getAll();
-    const card = cards[0];
-    return { props: { error: null, card } };
-  } catch (error) {
-    return { props: { error: error.message, card: null } };
-  }
-}
+// export async function getStaticPaths() {
+//   const xata = getXataClient();
+//   const cards = await xata.db.Cards.select(['*', 'user.*']).getAll();
+//   const paths = cards.map((card) => ({
+//     params: { id: card.id },
+//   }));
+//   return {
+//     paths, fallback: true,
+//   };
+// }
+
+// export async function getStaticProps({ params }) {
+//   const xata = getXataClient();
+//   try {
+//     const cards = await xata.db.Cards.filter('id', params.id).select(['*', 'user.*']).getAll();
+//     const card = cards[0];
+//     return { props: { error: null, card } };
+//   } catch (error) {
+//     return { props: { error: error.message, card: null } };
+//   }
+// }

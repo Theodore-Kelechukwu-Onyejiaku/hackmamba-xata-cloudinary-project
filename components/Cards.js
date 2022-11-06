@@ -87,6 +87,8 @@ export default function Cards({ cards, error, edit }) {
 
   // delete a card by sending request to api/delete-card
   const handleCardDelete = async (card) => {
+    const proceed = window.confirm('Are you sure you want to delete this card?');
+    if (!proceed) return;
     const res = await fetch('/api/delete-card', {
       method: 'DELETE',
       body: JSON.stringify(card),
@@ -217,7 +219,12 @@ export default function Cards({ cards, error, edit }) {
                         </div>
                         <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} flex flex-row ml-5 items-center justify-start pr-5`}>
                           {card?.collectors?.includes(data?.user?.id) || card?.user?.id === data?.user?.id ? <BsCheck2Circle className="text-4xl mr-4" /> : <MdAdd className="text-4xl mr-4 cursor-pointer" onClick={() => { addToCollection(card); }} />}
-                          {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video); }} className={`${card.color === '#FFFFFF' ? 'text-black dark:text-black' : 'text-white dark:text-white'} text-4xl animate-pulse  z-40 cursor-pointer font-extrabold`} />
+                          {card.video ? (
+                            <div onClick={() => { handleVideoOpen(card.video); }} className="flex items-center cursor-pointer border p-1">
+                              <FaVideo className={`${card.color === '#FFFFFF' ? 'text-black dark:text-black' : 'text-white dark:text-white'} text-4xl animate-pulse  z-40 cursor-pointer font-extrabold`} />
+                              <span className="ml-2">Play Video</span>
+                            </div>
+                          )
                             : <MdOutlineVideocamOff className={`${card.color === '#FFFFFF' ? 'text-black' : 'text-white'} text-4xl animate-pulse text-white z-40 cursor-not-allowed font-extrabold`} />}
                         </div>
                       </div>
@@ -230,8 +237,13 @@ export default function Cards({ cards, error, edit }) {
                     <button type="button" onClick={() => { front(card.id); }} className="p-3 bg-black rounded-md text-white border">Back</button>
                   </div>
                   <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} flex ml-5   pr-5`}>
-                    {card?.collectors?.includes(data?.user?.id) ? <BsCheck2Circle className="text-4xl mr-4" /> : <MdAdd className="text-4xl mr-4 cursor-pointer" onClick={() => { addToCollection(card); }} />}
-                    {card.video ? <FaVideo onClick={() => { handleVideoOpen(card.video); }} className={`${card.color === '#FFFFFF' ? 'text-black dark:text-black' : 'text-white dark:text-white'} text-4xl animate-pulse  z-40 cursor-pointer font-extrabold`} />
+                    {card?.collectors?.includes(data?.user?.id) || card?.user?.id === data?.user?.id ? <BsCheck2Circle className="text-4xl mr-4" /> : <MdAdd className="text-4xl mr-4 cursor-pointer" onClick={() => { addToCollection(card); }} />}
+                    {card.video ? (
+                      <div onClick={() => { handleVideoOpen(card.video); }} className="flex items-center cursor-pointer border p-1">
+                        <FaVideo className={`${card.color === '#FFFFFF' ? 'text-black dark:text-black' : 'text-white dark:text-white'} text-4xl animate-pulse  z-40 cursor-pointer font-extrabold`} />
+                        <span className="ml-2">Play Video</span>
+                      </div>
+                    )
                       : <MdOutlineVideocamOff className={`${card.color === '#FFFFFF' ? 'text-black' : 'text-white'} text-4xl animate-pulse text-white z-40 cursor-not-allowed font-extrabold`} />}
                   </div>
                 </div>

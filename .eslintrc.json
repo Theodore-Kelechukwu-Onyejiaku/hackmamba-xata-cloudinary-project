@@ -34,6 +34,7 @@
         "react/jsx-props-no-spreading": "off",
         "react/jsx-no-constructed-context-values": "off",
         "jsx-a11y/no-noninteractive-element-interactions": "off",
-        "no-unused-vars": "off"
+        "no-unused-vars": "off",
+        "no-alert": "off"
     }
 }

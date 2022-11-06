@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { SlArrowDown, SlLogout, SlUser } from 'react-icons/sl';
 import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import AppContext from '../utils/AppContext';
 
 export default function Header() {
@@ -9,6 +10,7 @@ export default function Header() {
   const [toggled, setToggled] = useState(false);
   const [userProfile, setUserProfile] = useState('');
   const session = useSession();
+  const router = useRouter();
 
   const { status, data } = session;
   const handleSignout = () => {
@@ -44,18 +46,18 @@ export default function Header() {
                 <span className="bg-color-orange text-white p-2 hover:text-gray-400">Logout</span>
               </div>
               <div className="hidden md:flex items-center justify-around mr-3 md:mr-5 cursor-pointer">
-                <Link href="/create" className="">
-                  <span className="cursor-pointer hover:text-gray-400">Create</span>
+                <Link href="/create">
+                  <span className={`${router.pathname === '/create' ? 'border-b-4 ' : ''}cursor-pointer hover:text-gray-400`}>Create</span>
                 </Link>
               </div>
               <div className="hidden md:flex items-center justify-around mr-3 md:mr-5 cursor-pointer">
                 <Link href="/my-cards" className="">
-                  <span className="cursor-pointer hover:text-gray-400">My Cards</span>
+                  <span className={`${router.pathname === '/my-cards' ? 'border-b-4 ' : ''}cursor-pointer hover:text-gray-400`}>My Cards</span>
                 </Link>
               </div>
               <div className="hidden md:flex items-center justify-around mr-3 md:mr-5 cursor-pointer">
                 <Link href="/my-collections" className="">
-                  <span className="cursor-pointer hover:text-gray-400">My Collections</span>
+                  <span className={`${router.pathname === '/my-collections' ? 'border-b-4 ' : ''}cursor-pointer hover:text-gray-400`}>My Collections</span>
                 </Link>
               </div>
             </>
@@ -68,13 +70,13 @@ export default function Header() {
                   </div>
                 </Link>
                 <Link href="/about" className="">
-                  <span className="md:hidden cursor-pointer hover:text-gray-400 mr-5">About</span>
+                  <span className={`${router.pathname === '/about' ? 'border-b-4 ' : ''}md:hidden cursor-pointer hover:text-gray-400 mr-5`}>About</span>
                 </Link>
               </div>
             )}
           <div className="hidden md:flex items-center justify-around mr-3 md:mr-5 cursor-pointer">
             <Link href="/about" className="">
-              <span className="cursor-pointer hover:text-gray-400">About</span>
+              <span className={`${router.pathname === '/about' ? 'border-b-4 ' : ''}cursor-pointer hover:text-gray-400`}>About</span>
             </Link>
           </div>
 
@@ -93,7 +95,7 @@ export default function Header() {
                   )
                     : (
                       <>
-                        <span className="uppercase text-xl block  w-12  h-12 text-center p-2 border rounded-full">
+                        <span className="uppercase md:hidden text-xl block  w-12  h-12 text-center p-2 border rounded-full">
                           {data?.user?.fullName[0]}
                         </span>
                         <Link href="/profile">
@@ -106,17 +108,17 @@ export default function Header() {
                   <span className={`${toggled ? 'rotate-180' : 'rotate-0'} transition-all duration-500 md:hidden p-3`}><SlArrowDown /></span>
                 </div>
 
-                <div className={`${toggled ? 'top-12 z-50 bg-white' : '-z-50 top-0 border-none'} flex flex-col absolute -z-50 top-0 w-full -right-3 dark:bg-slate-800 transition-all duration-500 border border-t-0 dark:border-none md:hidden`}>
+                <div className={`${toggled ? 'top-12 z-50 bg-white' : '-z-50 top-0 border-none'} flex flex-col absolute -z-50 -right-2 top-0 w-full  dark:bg-slate-800 transition-all duration-500 border border-t-0 dark:border-none md:hidden`}>
                   <Link href="/profile">
-                    <p onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0 top-5'} relative cursor-pointer hover:text-gray-400 text-center flex items-center justify-center transition-all duration-150`}>
+                    <p onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0 top-5'} ${router.pathname === '/profile' ? 'border-l-8 border-r-8' : ''} relative cursor-pointer hover:text-gray-400 text-center flex items-center justify-center transition-all duration-150`}>
                       <SlUser size={24} className="border rounded-full p-1" />
                       <span className="ml-3">Profile</span>
                     </p>
                   </Link>
-                  <Link href="/create"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-300`}>Create</span></Link>
-                  <Link href="/about"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-500`}>About</span></Link>
-                  <Link href="/my-cards"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-700`}>My Cards</span></Link>
-                  <Link href="/my-collections"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-700`}>My Collections</span></Link>
+                  <Link href="/create"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} ${router.pathname === '/create' ? 'border-l-8 border-r-8' : ''} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-300`}>Create</span></Link>
+                  <Link href="/about"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} ${router.pathname === '/about' ? 'border-l-8 border-r-8' : ''} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-500`}>About</span></Link>
+                  <Link href="/my-cards"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} ${router.pathname === '/my-cards' ? 'border-l-8 border-r-8' : ''} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-700`}>My Cards</span></Link>
+                  <Link href="/my-collections"><span onClick={() => { setToggled(!toggled); }} className={`${toggled ? 'my-5 left-0' : 'h-0 my-0'} ${router.pathname === '/my-collections' ? 'border-l-8 border-r-8' : ''} relative cursor-pointer hover:text-gray-400 text-center transition-all duration-700`}>My Collections</span></Link>
                   <p onClick={handleSignout} className="flex items-center justify-center cursor-pointer text-color-orange text-center p-2 hover:text-gray-400">
                     <SlLogout />
                     <span className="ml-4">Logout</span>
