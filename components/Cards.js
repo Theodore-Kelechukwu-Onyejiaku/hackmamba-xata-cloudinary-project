@@ -204,9 +204,9 @@ export default function Cards({ cards, error, edit }) {
                           <p className="text-sm my-5 ml-3">{card?.user?.fullName}</p>
                         </div>
                         <div className="relative">
-                          <div><span id={card.id.toString() + card.id} onClick={() => { handleLikeCard(card, card.id); }} className={`${card.likes.includes(data?.user?.id) ? ' liked ' : ' '} border heart-icon outline-none border-none block`} /></div>
+                          <div><span id={card.id.toString() + card.id} onClick={() => { handleLikeCard(card, card.id); }} className={`${card?.likes?.includes(data?.user?.id) ? ' liked ' : ' '} border heart-icon outline-none border-none block`} /></div>
                           <div className=" absolute right-5 bottom-0">
-                            <span id={card.id.toString() + card.id + card.id} className="">{card.likes.length}</span>
+                            <span id={card.id.toString() + card.id + card.id} className="">{card?.likes?.length}</span>
                           </div>
                         </div>
                       </div>
