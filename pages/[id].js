@@ -190,9 +190,9 @@ export default function Card({ card, error }) {
                   <h2 className="my-5 font-bold">Card Name</h2>
                   <input type="text" value={cardName} onChange={(e) => { setCardName(e.target.value); }} className="w-full border p-2 text-black" />
                 </div>
-                <div>
+                <div className="dark:tex-white">
                   <h2 className="my-5 font-bold">Card Category</h2>
-                  <select defaultValue={card.category} name="category" onChange={(e) => { setCategory(e.target.value); }}>
+                  <select className="dark:bg-black" defaultValue={card.category} name="category" onChange={(e) => { setCategory(e.target.value); }}>
                     <option value="">__Select__</option>
                     <option value="programming">Programming</option>
                     <option value="science">Science</option>
