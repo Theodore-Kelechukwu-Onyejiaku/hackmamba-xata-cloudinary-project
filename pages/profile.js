@@ -83,12 +83,12 @@ export default function profile({
           </div>
         </div>
         <div className="flex flex-col mb-20 pb-20 md:mb-0 md:space-y-0 space-y-5 md:flex-row items-center md:space-x-5 justify-center">
-          <div className="p-20 rounded-md w-96 flex flex-col justify-center items-center text-center border">
+          <div className="p-20 shadow-lg rounded-md w-96 flex flex-col justify-center items-center text-center border">
             <span>Number of cards</span>
             <span className="text-4xl">{cards.length}</span>
             <Link href="/my-cards"><FaEye className="text-3xl" /></Link>
           </div>
-          <div className="p-20 rounded-md w-96 flex flex-col justify-center items-center text-center border">
+          <div className="p-20 shadow-lg rounded-md w-96 flex flex-col justify-center items-center text-center border">
             <span>Number of Collections</span>
             <span className="text-4xl">
               {collections.length}

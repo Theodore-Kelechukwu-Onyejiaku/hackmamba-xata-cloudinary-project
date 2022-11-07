@@ -74,7 +74,6 @@ export default function Cards({ cards, error, edit }) {
       toast(error, { type: 'error' });
       return;
     }
-
     // add like button css effect
     if (likeButton.classList.contains('liked')) {
       likeButton.classList.remove('liked');
@@ -134,9 +133,11 @@ export default function Cards({ cards, error, edit }) {
       </div>
       {imageOpen
         && (
-          <div className="h-screen fixed -top-0 bg-black bg-opacity-90 z-50 w-full left-0 mx-0 flex flex-col justify-center items-center p-10">
-            <img alt="card" className="w-full md:w-3/4 h-auto md:p-40" src={imageSource} />
-            <span className="absolute top-20 text-3xl text-white cursor-pointer md:right-10 md:top-10 md:text-5xl" onClick={() => { setImageOpen(false); }}><MdOutlineClear /></span>
+          <div className="h-screen fixed -top-0 bg-black bg-opacity-90 z-50 w-full left-0 mx-0 flex flex-col justify-center items-center">
+            <div>
+              <img alt="card" className="w-64 md:w-72 lg:w-80" src={imageSource} />
+              <span className="absolute top-20 text-3xl text-white cursor-pointer md:right-10 md:top-10 md:text-5xl" onClick={() => { setImageOpen(false); }}><MdOutlineClear /></span>
+            </div>
           </div>
         )}
       {videoOpen
@@ -208,7 +209,7 @@ export default function Cards({ cards, error, edit }) {
                         <div className="relative">
                           <div><span id={card.id.toString() + card.id} onClick={() => { handleLikeCard(card, card.id); }} className={`${card?.likes?.includes(data?.user?.id) ? ' liked ' : ' '} border heart-icon outline-none border-none block`} /></div>
                           <div className=" absolute right-5 bottom-0">
-                            <span id={card.id.toString() + card.id + card.id} className="">{card?.likes?.length}</span>
+                            <span id={card.id.toString() + card.id + card.id} className="">{card?.likes?.length || 0}</span>
                           </div>
                         </div>
                       </div>
@@ -220,7 +221,7 @@ export default function Cards({ cards, error, edit }) {
                         <div className={`${card.color === '#FFFFFF' ? 'text-black ' : 'text-white '} flex flex-row ml-5 items-center justify-start pr-5`}>
                           {card?.collectors?.includes(data?.user?.id) || card?.user?.id === data?.user?.id ? <BsCheck2Circle className="text-4xl mr-4" /> : <MdAdd className="text-4xl mr-4 cursor-pointer" onClick={() => { addToCollection(card); }} />}
                           {card.video ? (
-                            <div onClick={() => { handleVideoOpen(card.video); }} className="flex items-center cursor-pointer border p-1">
+                            <div onClick={() => { handleVideoOpen(card.video); }} className="flex items-center cursor-pointer border rounded-md p-1">
                               <FaVideo className={`${card.color === '#FFFFFF' ? 'text-black dark:text-black' : 'text-white dark:text-white'} text-4xl animate-pulse  z-40 cursor-pointer font-extrabold`} />
                               <span className="ml-2">Play Video</span>
                             </div>

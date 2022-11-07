@@ -99,7 +99,7 @@ export default function Header() {
                           {data?.user?.fullName[0]}
                         </span>
                         <Link href="/profile">
-                          <span className="uppercase hidden text-xl md:block  w-12  h-12 text-center p-2 border rounded-full">
+                          <span className="uppercase hidden cursor-pointer text-xl md:block  w-12  h-12 text-center p-2 border rounded-full">
                             {data?.user?.fullName[0]}
                           </span>
                         </Link>
