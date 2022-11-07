@@ -149,7 +149,7 @@ export default function Cards({ cards, error, edit }) {
             <span className="absolute top-20 text-3xl text-white cursor-pointer md:right-10 sm:top-5 md:top-10 md:text-5xl" onClick={() => { setVideoOpen(false); }}><MdOutlineClear /></span>
           </div>
         )}
-      <div className="flex flex-col justify-center items-center sm:w-96 md:w-3/4 mx-auto">
+      <div className="flex flex-col overflow-hidden justify-center items-center sm:w-96 md:w-3/4 mx-auto">
         {cards?.length ? cards.filter((card) => {
           if (searchValue === '') {
             return card;
