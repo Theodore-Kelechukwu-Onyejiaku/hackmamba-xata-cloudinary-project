@@ -153,7 +153,7 @@ export default function Create() {
                 Card Category
                 <span className="text-red-400">*</span>
               </label>
-              <select name="category" onChange={(e) => { setCategory(e.target.value); }} className="block my-5">
+              <select name="category" onChange={(e) => { setCategory(e.target.value); }} className="block my-5 dark:bg-black">
                 <option value="">__Select__</option>
                 <option value="programming">Programming</option>
                 <option value="science">Science</option>
