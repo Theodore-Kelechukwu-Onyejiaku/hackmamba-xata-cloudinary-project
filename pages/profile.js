@@ -86,14 +86,14 @@ export default function profile({
           <div className="p-20 shadow-lg rounded-md w-96 flex flex-col justify-center items-center text-center border">
             <span>Number of cards</span>
             <span className="text-4xl">{cards.length}</span>
-            <Link href="/my-cards"><FaEye className="text-3xl" /></Link>
+            <Link href="/my-cards"><FaEye className="text-3xl hover:cursor-pointer" /></Link>
           </div>
           <div className="p-20 shadow-lg rounded-md w-96 flex flex-col justify-center items-center text-center border">
             <span>Number of Collections</span>
             <span className="text-4xl">
               {collections.length}
             </span>
-            <Link href="/my-collections"><FaEye className="text-3xl" /></Link>
+            <Link href="/my-collections"><FaEye className="text-3xl hover:cursor-pointer" /></Link>
           </div>
         </div>
       </div>
