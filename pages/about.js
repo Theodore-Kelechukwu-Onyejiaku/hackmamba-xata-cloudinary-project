@@ -24,6 +24,11 @@ export default function About() {
             Lastly, add a back content that answers the question.
           </li>
         </ul>
+      <div>
+    Built by <a href="https://www.linkedin.com/in/theodore-k-o/">Theodore Kelechukwu Onyejiaku </a>
+    <br/>
+    Leave a star if you like it 😊 <a href="https://github.com/Theodore-Kelechukwu-Onyejiaku/hackmamba-xata-cloudinary-project"/>Github Link</a>
+      </div>
       </div>
     </div>
   );
