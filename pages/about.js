@@ -31,7 +31,7 @@ export default function About() {
 
           <p>
             <span>Leave a star if you like it 😊 </span>
-            <a href="https://github.com/Theodore-Kelechukwu-Onyejiaku/hackmamba-xata-cloudinary-project" className='text-red-500 underline'>Github Link</a>
+            <a href="https://github.com/Theodore-Kelechukwu-Onyejiaku/hackmamba-xata-cloudinary-project" className="text-red-500 underline">Github Link</a>
           </p>
         </div>
       </div>
