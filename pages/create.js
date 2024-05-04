@@ -126,7 +126,7 @@ export default function Create() {
     });
     const { error } = await res.json();
     if (error) {
-      toast('There was error', { type: 'error' });
+      toast(`There was error ${error.message} `, { type: 'error' });
       setLoading(false);
       return;
     }
